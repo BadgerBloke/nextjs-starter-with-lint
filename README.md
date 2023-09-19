@@ -23,17 +23,20 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 ## Update the Dependencies
 
 NextJS default dependencies
+
 ```shell
 pnpm update next react react-dom
 ```
 
 These are also NextJS's default but I've segregated these into devDependencies
+
 ```shell
 pnpm update -D @types/node @types/react @types/react-dom autoprefixer eslint eslint-config-next postcss tailwindcss typescript
 ```
 
 Linting and Husky Dependencies<br/>
 📝 Updating the linting dependencies may break the linting flow in that case you should keep the current version of these dependencies.
+
 ```shell
 pnpm update -D @next/eslint-plugin-next @typescript-eslint/eslint-plugin eslint-config-google eslint-config-prettier eslint-config-standard-with-typescript eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-n eslint-plugin-prettier eslint-plugin-promise eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-simple-import-sort husky lint-staged match-sorter prettier-plugin-tailwindcss
 ```
@@ -42,8 +45,8 @@ pnpm update -D @next/eslint-plugin-next @typescript-eslint/eslint-plugin eslint-
 
 To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+-   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
