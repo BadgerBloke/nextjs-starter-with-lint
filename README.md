@@ -25,20 +25,20 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 NextJS default dependencies
 
 ```shell
-pnpm update next react react-dom
+pnpm add next@latest react@latest react-dom@latest
 ```
 
 These are also NextJS's default but I've segregated these into devDependencies
 
 ```shell
-pnpm update -D @types/node @types/react @types/react-dom autoprefixer eslint eslint-config-next postcss tailwindcss typescript
+pnpm add -D @types/node@latest @types/react@latest @types/react-dom@latest autoprefixer@latest eslint@latest eslint-config-next@latest postcss@latest tailwindcss@latest typescript@latest
 ```
 
 Linting and Husky Dependencies<br/>
 📝 Updating the linting dependencies may break the linting flow in that case you should keep the current version of these dependencies.
 
 ```shell
-pnpm update -D @next/eslint-plugin-next @typescript-eslint/eslint-plugin eslint-config-google eslint-config-prettier eslint-config-standard-with-typescript eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-n eslint-plugin-prettier eslint-plugin-promise eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-simple-import-sort husky lint-staged match-sorter prettier-plugin-tailwindcss
+pnpm add -D @next/eslint-plugin-next@latest @typescript-eslint/eslint-plugin@latest eslint-config-google@latest eslint-config-prettier@latest eslint-config-standard-with-typescript@latest eslint-plugin-import@latest eslint-plugin-jsx-a11y@latest eslint-plugin-n@latest eslint-plugin-prettier@latest eslint-plugin-promise@latest eslint-plugin-react@latest eslint-plugin-react-hooks@latest eslint-plugin-simple-import-sort@latest husky lint-staged@latest match-sorter@latest prettier-plugin-tailwindcss@latest
 ```
 
 ## Learn More
