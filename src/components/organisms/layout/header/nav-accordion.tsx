@@ -4,10 +4,10 @@ import { v4 as uuid } from 'uuid';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
 import { buttonVariants } from '~/components/ui/button';
-import { SideNavMenuType } from '~/lib/constants/navigation-menus';
+import { HeaderMenuType } from '~/lib/constants/header-menus';
 import { cn } from '~/lib/utils';
 
-const NavAccordion = ({ item, pathname, onClick }: { item: SideNavMenuType; pathname: string; onClick: () => void }) => (
+const NavAccordion = ({ item, pathname, onClick }: { item: HeaderMenuType; pathname: string; onClick: () => void }) => (
     <Accordion
         type="single"
         collapsible

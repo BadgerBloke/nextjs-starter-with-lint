@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import ThemeProvider from '~/components/molecules/theme-provider';
-import Navigation from '~/components/organisms/layout/navigation';
+import Header from '~/components/organisms/layout/header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,7 +18,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <html lang="en">
             <body className={inter.className}>
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                    <Navigation />
+                    <Header />
                     {children}
                 </ThemeProvider>
             </body>

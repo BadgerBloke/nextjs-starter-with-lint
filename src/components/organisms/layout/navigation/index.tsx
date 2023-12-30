@@ -1,102 +1,106 @@
 'use client';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import { v4 as uuid } from 'uuid';
 
 import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
+import { IconMenuDeep } from '@tabler/icons-react';
 
+import Breadcrumb from '~/components/molecules/breadcrumb';
 import { Button, buttonVariants } from '~/components/ui/button';
-import {
-    NavigationMenu,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    navigationMenuTriggerStyle,
-} from '~/components/ui/navigation-menu';
-import { NAVBAR_MENUS } from '~/lib/constants/navbar-menus';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { sideNavMenu } from '~/lib/constants/navigation-menus';
 import { cn } from '~/lib/utils';
 
 import NavAccordion from './nav-accordion';
-import NavMenuDropdown from './nav-dropdown';
-import ThemeToggleButton from './theme-toggle-button';
+import Pannel from './pannel';
 
-const Navigation = () => {
+const Navigation: React.FC<{
+    children: React.ReactNode;
+    orgId: string;
+}> = ({ children, orgId }) => {
     const [open, setOpen] = useState(false);
+    const pathname = usePathname();
     return (
-        <nav className="mx-auto flex h-[4.5rem] w-full max-w-[1344px] items-center px-5 sm:px-10">
-            <Link
-                href="/"
-                className="flex items-center gap-2"
-                onClick={() => {
-                    setOpen(false);
-                }}
-            >
-                <span>Your Logo</span>
-            </Link>
-            <div
-                className={clsx(
-                    'absolute left-0 top-[4.375rem] z-20 h-[calc(100vh-4.375rem)] w-full overflow-y-auto bg-[#E9E9E9] p-5 sm:px-10 xl:static xl:ml-20 xl:flex xl:h-auto xl:items-center xl:overflow-y-visible xl:bg-transparent xl:p-0 dark:bg-black xl:dark:bg-transparent',
-                    !open && 'hidden'
-                )}
-            >
+        <Fragment>
+            <nav className="sticky top-[4.5rem] flex h-[calc(100vh-4.5rem)] w-fit max-w-xs flex-col lg:min-w-[220px]">
                 {/* Desktop Navigation Bar */}
-                <NavigationMenu className="hidden xl:block">
-                    <NavigationMenuList className="">
-                        {NAVBAR_MENUS.map(menu =>
+                <ScrollArea className="hidden h-[calc(100vh-4.5rem)] px-2 lg:block">
+                    <div className="flex flex-col gap-2">
+                        {sideNavMenu(orgId).map(menu =>
                             menu.children ? (
-                                <NavMenuDropdown key={uuid()} menu={menu} />
+                                <NavAccordion key={uuid()} item={menu} pathname={pathname} onClick={() => setOpen(false)} />
                             ) : (
-                                <NavigationMenuItem key={uuid()} className="w-full" asChild>
-                                    <Link
-                                        href={menu.href}
-                                        onClick={() => {
-                                            setOpen(false);
-                                        }}
-                                    >
-                                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                            {menu.text}
-                                        </NavigationMenuLink>
-                                    </Link>
-                                </NavigationMenuItem>
+                                <Link
+                                    key={uuid()}
+                                    href={menu.href}
+                                    onClick={() => setOpen(false)}
+                                    className={cn(
+                                        buttonVariants({ variant: 'ghost' }),
+                                        clsx({
+                                            'bg-muted/50': pathname === menu.href,
+                                        }),
+                                        'justify-start no-underline'
+                                    )}
+                                >
+                                    <menu.icon className="mr-2 h-5 w-5" /> {menu.text}
+                                </Link>
                             )
                         )}
-                    </NavigationMenuList>
-                </NavigationMenu>
-
-                {/* Mobile Navigatin Bar */}
-                <div className="flex flex-col gap-2 xl:hidden">
-                    {NAVBAR_MENUS.map(menu =>
-                        menu.children ? (
-                            <NavAccordion key={uuid()} item={menu} onClick={() => setOpen(false)} />
-                        ) : (
-                            <Link
-                                key={uuid()}
-                                href={menu.href}
-                                onClick={() => {
-                                    setOpen(false);
-                                }}
-                                className={cn(buttonVariants({ variant: 'ghost' }), 'justify-start no-underline')}
-                            >
-                                {menu.text}
-                            </Link>
-                        )
-                    )}
-                </div>
-                <div className="ml-4 mt-10 xl:ml-auto xl:mt-0 xl:flex xl:items-center xl:gap-5">
-                    <div className="mt-10 flex flex-wrap items-center gap-5 xl:mt-0">
-                        <Link className={buttonVariants()} href="/login">
-                            Log in
-                        </Link>
-                        <ThemeToggleButton />
                     </div>
-                </div>
-            </div>
+                </ScrollArea>
 
-            <Button variant="outline" size="icon" className="ml-auto xl:hidden" onClick={() => setOpen(open => !open)}>
-                {open ? <Cross1Icon className="h-4 w-4" /> : <HamburgerMenuIcon className="h-4 w-4" />}
-            </Button>
-        </nav>
+                {/* Mobile Navigation Bar */}
+                <Pannel
+                    onClick={() => setOpen(false)}
+                    open={open}
+                    trigger={
+                        <Button variant="outline" size="icon" className="ml-auto xl:hidden" onClick={() => setOpen(false)}>
+                            {open ? <Cross1Icon className="h-4 w-4" /> : <HamburgerMenuIcon className="h-4 w-4" />}
+                        </Button>
+                    }
+                >
+                    <div className="flex flex-col gap-2">
+                        {sideNavMenu(orgId).map(menu =>
+                            menu.children ? (
+                                <NavAccordion key={uuid()} item={menu} pathname={pathname} onClick={() => setOpen(false)} />
+                            ) : (
+                                <Link
+                                    key={uuid()}
+                                    href={menu.href}
+                                    onClick={() => setOpen(false)}
+                                    className={cn(
+                                        buttonVariants({ variant: 'ghost' }),
+                                        clsx({
+                                            'bg-muted/50': pathname === menu.href,
+                                        }),
+                                        'justify-start no-underline'
+                                    )}
+                                >
+                                    <menu.icon className="mr-2 h-5 w-5" /> {menu.text}
+                                </Link>
+                            )
+                        )}
+                    </div>
+                </Pannel>
+            </nav>
+            <main className="min-h-screenLessNav mx-4 flex w-full flex-col gap-6 py-2 lg:ml-2 lg:mr-4">
+                <div className="flex w-full items-center gap-4">
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        className="shrink-0 lg:hidden"
+                        onClick={() => setOpen(open => !open)}
+                    >
+                        <IconMenuDeep className="h-4 w-4" />
+                    </Button>
+                    <Breadcrumb pathname={pathname} />
+                </div>
+                {children}
+            </main>
+        </Fragment>
     );
 };
 
