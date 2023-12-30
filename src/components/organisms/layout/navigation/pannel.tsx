@@ -24,7 +24,7 @@ const SheetSide = ({
             <SheetContent side="left" className="p-0">
                 <div className="mb-4 flex w-full items-center justify-between p-4">
                     <Link href="/" className="flex items-center gap-2" onClick={onClick}>
-                        <Typography variant="large">ytPipe</Typography>
+                        <Typography variant="large">MKSingh</Typography>
                     </Link>
                     <SheetClose asChild>{trigger}</SheetClose>
                 </div>
