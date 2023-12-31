@@ -34,7 +34,7 @@ const Header = ({ userData, channelId, className }: { userData?: UserData; chann
     const pathname = usePathname();
     return (
         <header className={cn('mx-auto flex h-[4.5rem] w-full max-w-[1344px] items-center px-5 sm:px-10', className)}>
-            <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
+            <Link href="/" className="flex items-center gap-2 lg:min-w-48 px-2" onClick={() => setOpen(false)}>
                 <Typography variant="large">MKSingh</Typography>
             </Link>
             <div className="ml-auto flex items-center gap-3 xl:hidden">

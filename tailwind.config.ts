@@ -11,6 +11,9 @@ module.exports = {
             },
         },
         extend: {
+            minHeight: {
+                screenLessNav: 'calc(100dvh - 72px)',
+            },
             colors: {
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',

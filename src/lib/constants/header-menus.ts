@@ -23,23 +23,23 @@ const HEADER_MENUS: Array<HeaderMenuType> = [
     },
     {
         href: '/', // Don't leave href as blank string otherwise accordion will not work.
-        text: 'Blogs',
+        text: 'Dropdown',
         icon: IconArticleFilledFilled,
         havePage: false,
         children: [
             {
-                href: '/blogs/web-development',
-                text: 'Web Development',
+                href: '/dropdown/item-1',
+                text: 'Item 1',
                 havePage: true,
             },
             {
-                href: '/blogs/desktop-application',
-                text: 'Desktop Application',
+                href: '/dropdown/item-2',
+                text: 'Item 2',
                 havePage: true,
             },
             {
-                href: '/blogs/identity-and-access',
-                text: 'Identity & Access',
+                href: '/dropdown/item-3',
+                text: 'Item 3',
                 havePage: true,
             },
         ],

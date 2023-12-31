@@ -1,4 +1,4 @@
-import { Icon, IconLayoutDashboard, IconSettings } from '@tabler/icons-react';
+import { Icon, IconDropletDown, IconLayoutDashboard, IconSettings } from '@tabler/icons-react';
 
 type MenuType = {
     href: string;
@@ -15,25 +15,40 @@ export type SideNavMenuType = MenuType & {
 
 const SIDE_NAV_MENUS: Array<SideNavMenuType> = [
     {
-        href: '/organizations/{{orgId}}',
+        href: '/users/{{userId}}',
         text: 'Dashboard',
         icon: IconLayoutDashboard,
-        name: 'organization',
-        path: 'organization',
+        name: 'user',
+        path: 'user',
         havePage: true,
     },
     {
-        href: '/organizations/{{orgId}}/settings',
+        href: '/users/{{userId}}/settings',
         text: 'Settings',
         icon: IconSettings,
         path: 'settings',
         havePage: true,
     },
+    {
+        href: '/users/{{userId}}/',
+        text: 'Dropdown',
+        icon: IconDropletDown,
+        path: 'dropdown',
+        havePage: false,
+        children: [
+            {
+                href: '/users/{{userId}}/dropdown/item-1',
+                text: 'Item 1',
+                path: 'item-1',
+                havePage: true,
+            },
+        ],
+    },
 ];
 
-export const sideNavMenu = (orgId: string) => {
+export const sideNavMenu = (userId: string) => {
     return SIDE_NAV_MENUS.map(menu => {
-        return { ...menu, href: menu.href.replace('{{orgId}}', orgId) };
+        return { ...menu, href: menu.href.replace('{{userId}}', userId) };
     });
 };
 

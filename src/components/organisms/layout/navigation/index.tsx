@@ -25,9 +25,9 @@ const Navigation: React.FC<{
     const pathname = usePathname();
     return (
         <Fragment>
-            <nav className="sticky top-[4.5rem] flex h-[calc(100vh-4.5rem)] w-fit max-w-xs flex-col lg:min-w-[220px]">
+            <nav className="flex h-[calc(100dvh-4.75rem)] mt-1 w-fit max-w-xs flex-col lg:min-w-[220px]">
                 {/* Desktop Navigation Bar */}
-                <ScrollArea className="hidden h-[calc(100vh-4.5rem)] px-2 lg:block">
+                <ScrollArea className="hidden h-[calc(100dvh-4.75rem)] mt-1 px-2 lg:block">
                     <div className="flex flex-col gap-2">
                         {sideNavMenu(orgId).map(menu =>
                             menu.children ? (

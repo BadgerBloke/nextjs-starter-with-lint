@@ -4,7 +4,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import ThemeProvider from '~/components/molecules/theme-provider';
-import Header from '~/components/organisms/layout/header';
+import { Toaster } from '~/components/ui/sonner';
+import { cn } from '~/lib/utils';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,9 +17,9 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <html lang="en">
-            <body className={inter.className}>
+            <body className={cn(inter.className, 'flex flex-col min-h-svh antialiased')}>
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                    <Header />
+                    <Toaster />
                     {children}
                 </ThemeProvider>
             </body>
