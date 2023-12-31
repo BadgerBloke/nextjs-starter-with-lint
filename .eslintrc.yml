@@ -27,6 +27,7 @@ settings:
 rules:
     react/react-in-jsx-scope: off
     jsx-a11y/anchor-is-valid: off
+    jsx-a11y/heading-has-content: off
     prettier/prettier:
         - error
         - { 'endOfLine': 'auto' }
@@ -38,7 +39,7 @@ rules:
         - {
               'require':
                   {
-                      'FunctionDeclaration': true,
+                      'FunctionDeclaration': false,
                       'MethodDefinition': false,
                       'ClassDeclaration': false,
                       'ArrowFunctionExpression': false,
