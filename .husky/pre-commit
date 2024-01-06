@@ -36,17 +36,25 @@ pnpm check-types ||
     false;
 )
 
-# If everything passes... Now we can commit
-echo '🤔🤔🤔🤔... Alright... Code looks good to me... Trying to build now. 🤔🤔🤔🤔'
-
-# pnpm build ||
+# # Check commit message
+# pnpm commitlint -e $HUSKY_GIT_PARAMS ||
 # (
-#     echo '❌👷🔨❌ Better call Bob... Because your build failed ❌👷🔨❌
-#             Next build failed: View the errors above to see why. 
-#     '
+#     echo '🧐📝🧐📝 Commit message is not following the standard 🧐📝🧐📝
+#             Please follow conventional commit message format. See error message above.';
 #     false;
 # )
 
 # If everything passes... Now we can commit
-echo '✅✅✅✅ You win this time... I am committing this now. ✅✅✅✅'
-# echo '✅✅✅✅ I am committing this now. ✅✅✅✅'
+echo '🤔🤔🤔🤔... Alright... Code looks good to me... Trying to build now. 🤔🤔🤔🤔'
+
+pnpm build ||
+(
+    echo '❌👷🔨❌ Better call Bob... Because your build failed ❌👷🔨❌
+            Next build failed: View the errors above to see why. 
+    '
+    false;
+)
+
+# If everything passes... Now we can commit
+echo '⌛️⌛️⌛️ You win this time... I am committing this now. ⌛️⌛️⌛️'
+
