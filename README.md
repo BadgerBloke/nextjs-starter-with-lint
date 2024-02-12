@@ -1,5 +1,11 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Create NextJS App using this Example
+
+```bash
+pnpm create next-app@latest --example https://github.com/MKSingh-Dev/nextjs-starter-with-lint
+```
+
 ## Getting Started
 
 **A NextJS `app` router `TypeScript` and `TailwindCSS` starter template with `eslint`, `prettier`, and `husky` along with `lintstaged` configuration.**
