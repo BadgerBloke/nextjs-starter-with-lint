@@ -4,6 +4,7 @@
 echo '🏗️👷 Styling, testing and building your project before committing'
 
 # Check ESLint Standards
+pnpm lint --fix
 pnpm lint-staged ||
 (
     echo '🔨❌ Yoo, you have a problem in your code. Check linter 🔨❌
@@ -13,6 +14,8 @@ pnpm lint-staged ||
 )
 
 # Check Prettier standards
+pnpm format
+git add .
 pnpm check-format ||
 (
     echo '🤢🤮🤢🤮 Its F**KING RAW - Your styling looks disgusting. 🤢🤮🤢🤮

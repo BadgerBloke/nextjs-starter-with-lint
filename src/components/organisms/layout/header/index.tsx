@@ -20,6 +20,7 @@ import {
     navigationMenuTriggerStyle,
 } from '~/components/ui/navigation-menu';
 import { Separator } from '~/components/ui/separator';
+import { SheetClose } from '~/components/ui/sheet';
 import { IAM } from '~/lib/config';
 import { headerMenu } from '~/lib/constants/header-menus';
 import { UserData } from '~/lib/interfaces/user';
@@ -56,16 +57,9 @@ const Header = ({ userData, channelId, className }: { userData?: UserData; chann
                                 <NavMenuDropdown key={uuid()} menu={menu} />
                             ) : (
                                 <NavigationMenuItem key={uuid()} className="w-full" asChild>
-                                    <Link
-                                        href={menu.href}
-                                        onClick={() => {
-                                            setOpen(false);
-                                        }}
-                                    >
-                                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                            {menu.text}
-                                        </NavigationMenuLink>
-                                    </Link>
+                                    <NavigationMenuLink href={menu.href} className={navigationMenuTriggerStyle()}>
+                                        {menu.text}
+                                    </NavigationMenuLink>
                                 </NavigationMenuItem>
                             )
                         )}
@@ -123,20 +117,20 @@ const Header = ({ userData, channelId, className }: { userData?: UserData; chann
                         menu.children ? (
                             <NavAccordion key={uuid()} item={menu} onClick={() => setOpen(false)} pathname={pathname} />
                         ) : (
-                            <Link
-                                key={uuid()}
-                                href={menu.href}
-                                onClick={() => setOpen(false)}
-                                className={cn(
-                                    buttonVariants({ variant: 'ghost' }),
-                                    clsx({
-                                        'bg-muted/50': pathname === menu.href,
-                                    }),
-                                    'justify-start no-underline'
-                                )}
-                            >
-                                <menu.icon className="mr-2 h-5 w-5" /> {menu.text}
-                            </Link>
+                            <SheetClose asChild key={uuid()}>
+                                <Link
+                                    href={menu.href}
+                                    className={cn(
+                                        buttonVariants({ variant: 'ghost' }),
+                                        clsx({
+                                            'bg-muted/50': pathname === menu.href,
+                                        }),
+                                        'justify-start no-underline'
+                                    )}
+                                >
+                                    <menu.icon className="mr-2 h-5 w-5" /> {menu.text}
+                                </Link>
+                            </SheetClose>
                         )
                     )}
                 </div>

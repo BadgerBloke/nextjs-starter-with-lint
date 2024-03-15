@@ -17,7 +17,7 @@ const SIDE_NAV_MENUS: Array<SideNavMenuType> = [
     {
         href: '/users/{{userId}}',
         text: 'Dashboard',
-        icon: IconLayoutDashboard,
+        icon: IconLayoutDashboard as Icon,
         name: 'user',
         path: 'user',
         havePage: true,
@@ -25,14 +25,14 @@ const SIDE_NAV_MENUS: Array<SideNavMenuType> = [
     {
         href: '/users/{{userId}}/settings',
         text: 'Settings',
-        icon: IconSettings,
+        icon: IconSettings as Icon,
         path: 'settings',
         havePage: true,
     },
     {
         href: '/users/{{userId}}/',
         text: 'Dropdown',
-        icon: IconDropletDown,
+        icon: IconDropletDown as Icon,
         path: 'dropdown',
         havePage: false,
         children: [

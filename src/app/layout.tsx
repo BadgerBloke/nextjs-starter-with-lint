@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <html lang="en" className="dark" style={{ colorScheme: 'dark' }}>
+        <html lang="en" className="light" style={{ colorScheme: 'light' }}>
             <body className={cn(inter.className, 'flex flex-col min-h-svh antialiased')}>
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
                     <Toaster />

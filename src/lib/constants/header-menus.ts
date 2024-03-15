@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Icon, IconArticleFilledFilled, IconHome2 } from '@tabler/icons-react';
+import { Icon, IconArticleFilled, IconHome2 } from '@tabler/icons-react';
 
 type MenuType = {
     href: string;
@@ -18,13 +18,13 @@ const HEADER_MENUS: Array<HeaderMenuType> = [
     {
         href: '/',
         text: 'Home',
-        icon: IconHome2,
+        icon: IconHome2 as Icon,
         havePage: true,
     },
     {
         href: '/', // Don't leave href as blank string otherwise accordion will not work.
         text: 'Dropdown',
-        icon: IconArticleFilledFilled,
+        icon: IconArticleFilled as Icon,
         havePage: false,
         children: [
             {
