@@ -3,7 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
-import ThemeProvider from '~/components/molecules/theme-provider';
+import { ThemeProvider } from '~/components/molecules/theme-provider';
 import { Toaster } from '~/components/ui/sonner';
 import { cn } from '~/lib/utils';
 
@@ -16,10 +16,10 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <html lang="en" className="light" style={{ colorScheme: 'light' }}>
+        <html lang="en" suppressHydrationWarning>
             <body className={cn(inter.className, 'flex flex-col min-h-svh antialiased')}>
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                    <Toaster />
+                    <Toaster richColors />
                     {children}
                 </ThemeProvider>
             </body>

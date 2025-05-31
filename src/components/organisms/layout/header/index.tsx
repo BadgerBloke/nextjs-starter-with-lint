@@ -57,8 +57,10 @@ const Header = ({ userData, channelId, className }: { userData?: UserData; chann
                                 <NavMenuDropdown key={uuid()} menu={menu} />
                             ) : (
                                 <NavigationMenuItem key={uuid()} className="w-full" asChild>
-                                    <NavigationMenuLink href={menu.href} className={navigationMenuTriggerStyle()}>
-                                        {menu.text}
+                                    <NavigationMenuLink asChild>
+                                        <Link href={menu.href} className={navigationMenuTriggerStyle()}>
+                                            {menu.text}
+                                        </Link>
                                     </NavigationMenuLink>
                                 </NavigationMenuItem>
                             )
