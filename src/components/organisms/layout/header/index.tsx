@@ -96,7 +96,7 @@ const Header = ({ userData, channelId, className }: { userData?: UserData; chann
                             </DropdownMenuContent>
                         </DropdownMenu>
                     ) : (
-                        <Link className={buttonVariants()} href={`/sign-in?callback=${pathname}`}>
+                        <Link className={buttonVariants()} href={`/auth/sign-in?callback=${pathname}`}>
                             Log in
                         </Link>
                     )}

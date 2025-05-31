@@ -1,7 +1,9 @@
-import { createContext, ReactNode, useContext } from 'react';
-import { Loader2, LucideIcon, Send } from 'lucide-react';
+'use client';
 
-import { Button as ButtonPrimitive, ButtonProps } from '~/components/ui/button';
+import { createContext, ReactNode, useContext } from 'react';
+import { Loader2, LogIn, LucideIcon } from 'lucide-react';
+
+import { Button, ButtonProps } from '~/components/ui/button';
 import { cn } from '~/lib/utils';
 
 // Context for sharing state between compound components
@@ -27,12 +29,12 @@ interface SubmitButtonRootProps extends ButtonProps {
     children: ReactNode;
 }
 
-const Button = ({ submitting = false, noIcon, className, children, ...props }: SubmitButtonRootProps) => {
+const SubmitButton = ({ submitting = false, noIcon, className, children, ...props }: SubmitButtonRootProps) => {
     return (
         <SubmitButtonContext.Provider value={{ submitting, noIcon }}>
-            <ButtonPrimitive type="submit" className={cn('w-full', className)} {...props}>
+            <Button type="submit" className={cn('w-full', className)} {...props}>
                 {children}
-            </ButtonPrimitive>
+            </Button>
         </SubmitButtonContext.Provider>
     );
 };
@@ -43,7 +45,7 @@ interface SubmitButtonIdealTextProps {
     className?: string;
 }
 
-const IdealText = ({ children, className }: SubmitButtonIdealTextProps) => {
+const SubmitIdealText = ({ children, className }: SubmitButtonIdealTextProps) => {
     const { submitting } = useSubmitButtonContext('IdealText');
 
     if (submitting) return null;
@@ -72,7 +74,7 @@ interface SubmitButtonIconProps {
     children?: ReactNode;
 }
 
-const Icon = ({ icon: Icon = Send, className, children }: SubmitButtonIconProps) => {
+const SubmitIcon = ({ icon: Icon = LogIn, className, children }: SubmitButtonIconProps) => {
     const { submitting, noIcon } = useSubmitButtonContext('Icon');
 
     if (noIcon) return null;
@@ -86,10 +88,11 @@ const Icon = ({ icon: Icon = Send, className, children }: SubmitButtonIconProps)
 
 // Compound component with dot notation
 const Submit = {
-    Button,
-    IdealText,
-    SubmittingText,
-    Icon,
+    Button: SubmitButton,
+    IdealText: SubmitIdealText,
+    SubmittingText: SubmittingText,
+    Icon: SubmitIcon,
 };
 
+export { SubmitButton, SubmitIcon, SubmitIdealText, SubmittingText };
 export default Submit;
