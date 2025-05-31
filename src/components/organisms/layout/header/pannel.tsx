@@ -7,9 +7,9 @@ import { ScrollArea } from '~/components/ui/scroll-area';
 import { Separator } from '~/components/ui/separator';
 import { Sheet, SheetClose, SheetContent } from '~/components/ui/sheet';
 
-const SHEET_SIDES = ['top', 'right', 'bottom', 'left'] as const;
+type SHEET_SIDES = ['top', 'right', 'bottom', 'left'];
 
-type SheetSide = (typeof SHEET_SIDES)[number];
+type SheetSide = SHEET_SIDES[number];
 
 const SheetSide = ({
     children,
