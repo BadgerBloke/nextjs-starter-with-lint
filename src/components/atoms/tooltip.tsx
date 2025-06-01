@@ -1,17 +1,26 @@
-import { Tooltip as TooltipPrimitive, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+import { ReactNode } from 'react';
 
-interface TooltipProps {
-    children: React.ReactNode;
-    message: string | React.ReactNode;
-    hidden?: boolean;
+import { TooltipContentProps } from '@radix-ui/react-tooltip';
+
+import { Tooltip as TooltipPrimitive, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
+import { cn } from '~/lib/utils';
+
+interface TooltipProps extends TooltipContentProps {
+    children: ReactNode;
+    className?: string;
+    message: string;
+    delayDuration?: number;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ children, message, hidden }) => (
-    <TooltipProvider>
+const Tooltip = ({ children, className, message, delayDuration = 0, ...props }: TooltipProps) => (
+    <TooltipProvider delayDuration={delayDuration}>
         <TooltipPrimitive>
             <TooltipTrigger asChild>{children}</TooltipTrigger>
-            <TooltipContent hidden={hidden}>
-                <p>{message}</p>
+            <TooltipContent
+                className={cn('border-input bg-popover text-popover-foreground border px-2 py-1 text-xs', className)}
+                {...props}
+            >
+                {message}
             </TooltipContent>
         </TooltipPrimitive>
     </TooltipProvider>

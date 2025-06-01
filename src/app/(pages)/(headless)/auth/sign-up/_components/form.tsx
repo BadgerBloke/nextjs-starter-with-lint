@@ -21,25 +21,38 @@ import { schema } from './schema';
 
 const SignUpForm = () => {
     const { signUp, isLoaded } = useSignUp();
+    const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const setVerifyingNewAccount = useSetIsVerifyingNewAccount();
-    const router = useRouter();
 
     const [form, fields] = useForm({
+        // lastResult,
         shouldValidate: 'onSubmit',
         shouldRevalidate: 'onInput',
         onValidate: ({ formData }) => parseWithZod(formData, { schema }),
         onSubmit: async (e, { formData }) => {
+            e.preventDefault();
+            const result = parseWithZod(formData, { schema });
             try {
                 setIsSubmitting(true);
 
-                const result = parseWithZod(formData, { schema });
                 if (isLoaded && result.status === 'success') {
-                    const { email, password } = result.value;
-                    const res = await signUp.create({ emailAddress: email, password });
-                    if (res.status === 'complete') {
+                    const { email, password, firstName, lastName } = result.value;
+                    const res = await signUp.create({
+                        emailAddress: email,
+                        password,
+                        firstName,
+                        lastName,
+                        legalAccepted: true,
+                    });
+                    if (res.status === 'missing_requirements' && !res.missingFields.length) {
                         setVerifyingNewAccount(true);
-                        router.replace('/auth/verify-account');
+                        const res = await signUp.prepareEmailAddressVerification({
+                            strategy: 'email_code',
+                        });
+                        if (res.status === 'missing_requirements' && !res.missingFields.length) {
+                            router.replace('/auth/verify-account');
+                        }
                     } else {
                         dispatchToast({
                             type: 'error',
@@ -51,15 +64,18 @@ const SignUpForm = () => {
                     }
                 }
             } catch (error) {
+                setVerifyingNewAccount(false);
                 dispatchToast({
                     type: 'error',
                     message: { title: 'Sign up failed!', description: (error as Error).message },
                 });
+            } finally {
+                setIsSubmitting(false);
             }
         },
     });
     return (
-        <form className="p-6 md:p-8" id={form.id} onSubmit={form.onSubmit}>
+        <form className="p-6 md:p-8" id={form.id} onSubmit={form.onSubmit} method="POST">
             <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-center text-center">
                     <h1 className="text-2xl font-bold">Welcome to app</h1>

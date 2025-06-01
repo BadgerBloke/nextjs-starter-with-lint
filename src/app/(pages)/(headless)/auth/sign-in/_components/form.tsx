@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { useSignIn } from '@clerk/nextjs';
 import { useForm } from '@conform-to/react';
@@ -21,6 +22,8 @@ import { dispatchToast } from '~/lib/utils/message-handler';
 import { schema } from './schema';
 
 const SignInForm = () => {
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const { signIn, setActive, isLoaded } = useSignIn();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [form, fields] = useForm({
@@ -37,9 +40,15 @@ const SignInForm = () => {
             if (isLoaded && result.status === 'success') {
                 try {
                     setIsSubmitting(true);
-                    const res = await signIn.create({ identifier: result.value.email, password: result.value.password });
+                    const res = await signIn.create({
+                        identifier: result.value.email,
+                        password: result.value.password,
+                        strategy: 'password',
+                    });
                     if (res?.status === 'complete') {
                         await setActive({ session: res.createdSessionId });
+                        router.replace(searchParams.get('redirect_url') || '/');
+                        return;
                     } else {
                         dispatchToast({
                             type: 'error',

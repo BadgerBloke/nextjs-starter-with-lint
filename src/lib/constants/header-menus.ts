@@ -1,12 +1,13 @@
-import { Icon, IconArticleFilled, IconHome2 } from '@tabler/icons-react';
+import { BotMessageSquare, DollarSign, Home, LucideIcon, PhoneIcon, Users } from 'lucide-react';
 
 type MenuType = {
     href: string;
     text: string;
-    icon: Icon;
+    icon: LucideIcon;
     name?: string;
     path?: string;
     havePage: boolean;
+    isPrivate?: boolean;
 };
 
 export type HeaderMenuType = MenuType & {
@@ -17,31 +18,36 @@ const HEADER_MENUS: Array<HeaderMenuType> = [
     {
         href: '/',
         text: 'Home',
-        icon: IconHome2 as Icon,
+        icon: Home,
         havePage: true,
     },
     {
-        href: '/', // Don't leave href as blank string otherwise accordion will not work.
-        text: 'Dropdown',
-        icon: IconArticleFilled as Icon,
-        havePage: false,
-        children: [
-            {
-                href: '/dropdown/item-1',
-                text: 'Item 1',
-                havePage: true,
-            },
-            {
-                href: '/dropdown/item-2',
-                text: 'Item 2',
-                havePage: true,
-            },
-            {
-                href: '/dropdown/item-3',
-                text: 'Item 3',
-                havePage: true,
-            },
-        ],
+        href: '/agents/restore-image',
+        text: 'Explore',
+        icon: BotMessageSquare,
+        havePage: true,
+        isPrivate: true,
+    },
+    {
+        href: '/pricing',
+        text: 'Pricing',
+        icon: DollarSign,
+        havePage: true,
+        isPrivate: false,
+    },
+    {
+        href: '/about-us',
+        text: 'About Us',
+        icon: Users,
+        havePage: true,
+        isPrivate: false,
+    },
+    {
+        href: '/contact-us',
+        text: 'Contact Us',
+        icon: PhoneIcon,
+        havePage: true,
+        isPrivate: false,
     },
 ];
 

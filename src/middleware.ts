@@ -1,4 +1,8 @@
+import { NextResponse } from 'next/server';
+
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+
+import { CLIENT } from './lib/config';
 
 const isPublicRoute = createRouteMatcher([
     '/',
@@ -8,7 +12,6 @@ const isPublicRoute = createRouteMatcher([
     '/social(.*)',
     '/privacy-policy',
     '/terms-of-service',
-    '/auth(.*)',
     '/webhook/clerk',
     '/sitemap.xml',
     '/robots.txt',
@@ -18,8 +21,21 @@ const isPublicRoute = createRouteMatcher([
     '/api/transactions(.*)',
 ]);
 
+const isAuthRoute = createRouteMatcher(['/auth(.*)']);
+
 export default clerkMiddleware(async (auth, request) => {
-    if (!isPublicRoute(request)) {
+    if (isAuthRoute(request)) {
+        try {
+            const authObj = await auth.protect();
+            if (isAuthRoute(request) && authObj.sessionStatus !== 'pending') {
+                const redirectUrl = request.nextUrl.searchParams.get('redirect_url');
+                const url = new URL(redirectUrl || CLIENT.host);
+                return NextResponse.redirect(url);
+            }
+        } catch {
+            // NOTE: No action required
+        }
+    } else if (!isPublicRoute(request)) {
         await auth.protect();
     }
 });

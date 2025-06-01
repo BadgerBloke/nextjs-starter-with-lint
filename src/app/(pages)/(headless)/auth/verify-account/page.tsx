@@ -1,77 +1,80 @@
 'use client';
 
-import { useId } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { OTPInput, SlotProps } from 'input-otp';
-import { MinusIcon } from 'lucide-react';
 
-import { Label } from '~/components/ui/label';
-import { cn } from '~/lib/utils';
+import { useSignUp } from '@clerk/nextjs';
+import { useForm } from '@conform-to/react';
+import { parseWithZod } from '@conform-to/zod/v4';
 
-import { useIsVerifyingNewAccount } from '../_components/store';
+import { SubmitButton } from '~/components/molecules/form-elements/submit-button';
+import OtpInput from '~/components/molecules/otp-input';
+import { Card, CardContent } from '~/components/ui/card';
+import { dispatchToast } from '~/lib/utils/message-handler';
+
+import AuthError from '../_components/auth-error';
+import { useIsVerifyingNewAccount, useSetIsVerifyingNewAccount } from '../_components/store';
+
+import { schema } from './_components/schema';
 
 const VerificationPage = () => {
-    const id = useId();
+    const { signUp, setActive, isLoaded } = useSignUp();
     const isVerifyingNewAccount = useIsVerifyingNewAccount();
+    const setVerifyingNewAccount = useSetIsVerifyingNewAccount();
     const router = useRouter();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [form] = useForm({
+        onValidate: ({ formData }) => parseWithZod(formData, { schema }),
+        onSubmit: async (e, { formData }) => {
+            e.preventDefault();
+            try {
+                if (!isLoaded) {
+                    dispatchToast({
+                        type: 'warning',
+                        message: { title: 'Context lost!', description: 'It seems like signup context has been lost' },
+                    });
+                    return;
+                }
 
-    if (!isVerifyingNewAccount) {
-        return router.replace('/auth/error');
-    }
+                setIsSubmitting(true);
+                const result = parseWithZod(formData, { schema });
+                if (result.status === 'success') {
+                    const { code } = result.value;
+                    const res = await signUp.attemptEmailAddressVerification({
+                        code,
+                    });
+
+                    if (res.status === 'complete') {
+                        setVerifyingNewAccount(false);
+                        await setActive({ session: res.createdSessionId });
+                        return router.replace('/dashboard');
+                    }
+                }
+            } catch (error) {
+                dispatchToast({
+                    type: 'error',
+                    message: { title: 'Verification failed!', description: (error as Error).message },
+                });
+            } finally {
+                setIsSubmitting(false);
+            }
+        },
+    });
+
+    if (!isVerifyingNewAccount) return <AuthError code="DIRECT_ACCOUNT_VERIFICATIOIN" />;
 
     return (
-        <div className="*:not-first:mt-2">
-            <Label htmlFor={id}>OTP input double</Label>
-            <OTPInput
-                id={id}
-                containerClassName="flex items-center gap-3 has-disabled:opacity-50"
-                maxLength={6}
-                render={({ slots }) => (
-                    <>
-                        <div className="flex">
-                            {slots.slice(0, 3).map((slot, idx) => (
-                                <Slot key={idx} {...slot} />
-                            ))}
-                        </div>
-
-                        <div className="text-muted-foreground/80">
-                            <MinusIcon size={16} aria-hidden="true" />
-                        </div>
-
-                        <div className="flex">
-                            {slots.slice(3).map((slot, idx) => (
-                                <Slot key={idx} {...slot} />
-                            ))}
-                        </div>
-                    </>
-                )}
-            />
-            <p className="text-muted-foreground mt-2 text-xs" role="region" aria-live="polite">
-                Built with{' '}
-                <a
-                    className="hover:text-foreground underline"
-                    href="https://github.com/guilhermerodz/input-otp"
-                    target="_blank"
-                    rel="noopener nofollow noreferrer"
-                >
-                    Input OTP
-                </a>
-            </p>
-        </div>
+        <Card className="sm:max-w-md mx-auto">
+            <CardContent>
+                <form id={form.id} onSubmit={form.onSubmit} className="grid gap-3">
+                    <OtpInput label="Account verification code" name="code" />
+                    <SubmitButton className="w-fit mt-4" submitting={isSubmitting}>
+                        Submit
+                    </SubmitButton>
+                </form>
+            </CardContent>
+        </Card>
     );
 };
-
-function Slot(props: SlotProps) {
-    return (
-        <div
-            className={cn(
-                'border-input bg-background text-foreground relative -ms-px flex size-9 items-center justify-center border font-medium shadow-xs transition-[color,box-shadow] first:ms-0 first:rounded-s-md last:rounded-e-md',
-                { 'border-ring ring-ring/50 z-10 ring-[3px]': props.isActive }
-            )}
-        >
-            {props.char !== null && <div>{props.char}</div>}
-        </div>
-    );
-}
 
 export default VerificationPage;

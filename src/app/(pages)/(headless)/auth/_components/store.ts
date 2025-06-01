@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
-type AuthErrorCode = 'DIRECT_ACCOUNT_VERIFICATIOIN';
+export type AuthErrorCode = 'DIRECT_ACCOUNT_VERIFICATIOIN';
 
 interface AuthState {
     isVerifyingNewAccount?: boolean;
@@ -18,7 +18,7 @@ interface AuthStore extends AuthState, AuthAction {}
 
 const useAuthStore = create<AuthStore>()(
     immer(set => ({
-        isVerifyingNewAccount: true,
+        isVerifyingNewAccount: false,
         setIsVerifyingNewAccount: state => {
             if (typeof state === 'undefined') {
                 set(prevState => {

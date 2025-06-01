@@ -1,43 +1,29 @@
-import { JSX } from 'react';
+import { ReactNode } from 'react';
 import Link from 'next/link';
 
 import Typography from '~/components/atoms/typography';
-import { buttonVariants } from '~/components/ui/button';
+import { ModeToggle } from '~/components/molecules/mode-toggle';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { Separator } from '~/components/ui/separator';
-import { Sheet, SheetClose, SheetContent } from '~/components/ui/sheet';
+import { Sheet, SheetClose, SheetContent, SheetTitle } from '~/components/ui/sheet';
 
-type SHEET_SIDES = ['top', 'right', 'bottom', 'left'];
-
-type SheetSide = SHEET_SIDES[number];
-
-const SheetSide = ({
-    children,
-    trigger,
-    open,
-    onClick,
-}: {
-    children: React.ReactNode;
-    trigger: JSX.Element;
-    open: boolean;
-    onClick: () => void;
-}) => {
+const SheetSide = ({ children, open, onClick }: { children: ReactNode; open: boolean; onClick: () => void }) => {
     return (
         <Sheet open={open} onOpenChange={onClick}>
             <SheetContent side="left" className="p-4">
+                <SheetTitle className="sr-only">Mobile menu</SheetTitle>
                 <div className="mb-4 flex w-full items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2" onClick={onClick}>
-                        <Typography variant="large">MKSingh</Typography>
-                    </Link>
-                    <SheetClose asChild>{trigger}</SheetClose>
+                    <SheetClose asChild>
+                        <Link href="/" className="flex items-center gap-2 lg:min-w-48 px-2">
+                            <Typography variant="large">MKSingh</Typography>
+                        </Link>
+                    </SheetClose>
                 </div>
-                <ScrollArea className="h-[calc(100vh-120px)]">
+                <ScrollArea className="flex h-[calc(100vh-120px)] flex-col">
                     {children}
                     <Separator className="my-1" />
-                    <div className="my-5 ml-4 flex flex-wrap items-center gap-5">
-                        <Link className={buttonVariants()} href="/auth/sign-in">
-                            Log in
-                        </Link>
+                    <div className="my-5 flex flex-wrap items-center gap-5">
+                        <ModeToggle variant="image" />
                     </div>
                 </ScrollArea>
             </SheetContent>

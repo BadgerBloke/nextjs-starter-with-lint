@@ -1,14 +1,12 @@
-'use client';
-
 import Typography from '~/components/atoms/typography';
 
-import { useAuthErrorCode, useClearAuthError } from '../_components/store';
+import { AuthErrorCode, useAuthErrorCode, useClearAuthError } from './store';
 
-const AuthErrorPage = () => {
+const AuthError = ({ code }: { code?: AuthErrorCode }) => {
     const authErrorCode = useAuthErrorCode();
     const clearAuthError = useClearAuthError();
 
-    switch (authErrorCode) {
+    switch (authErrorCode || code) {
         case 'DIRECT_ACCOUNT_VERIFICATIOIN': {
             clearAuthError();
             return <Typography variant="small">Direct account verification is not possible.</Typography>;
@@ -17,4 +15,4 @@ const AuthErrorPage = () => {
     return <div>Auth Error Page</div>;
 };
 
-export default AuthErrorPage;
+export default AuthError;

@@ -24,6 +24,8 @@ const PasswordInput = <T extends string>({ field, label, className, description,
             { regex: /[0-9]/, text: 'At least 1 number' },
             { regex: /[a-z]/, text: 'At least 1 lowercase letter' },
             { regex: /[A-Z]/, text: 'At least 1 uppercase letter' },
+            // eslint-disable-next-line no-useless-escape
+            { regex: /[!"#$%&'()*+,\-./:;<=>?@\[\]^_`{|}~]/, text: 'At least 1 special character' },
         ];
 
         return requirements.map(req => ({
@@ -41,15 +43,15 @@ const PasswordInput = <T extends string>({ field, label, className, description,
     const getStrengthColor = (score: number) => {
         if (score === 0) return 'bg-border';
         if (score <= 1) return 'bg-red-500';
-        if (score <= 2) return 'bg-orange-500';
-        if (score === 3) return 'bg-amber-500';
+        if (score <= 3) return 'bg-orange-500';
+        if (score === 4) return 'bg-amber-500';
         return 'bg-emerald-500';
     };
 
     const getStrengthText = (score: number) => {
         if (score === 0) return 'Enter a password';
-        if (score <= 2) return 'Weak password';
-        if (score === 3) return 'Medium password';
+        if (score <= 3) return 'Weak password';
+        if (score === 4) return 'Medium password';
         return 'Strong password';
     };
 
@@ -82,7 +84,7 @@ const PasswordInput = <T extends string>({ field, label, className, description,
                         type={isVisible ? 'text' : 'password'}
                         value={password}
                         onChange={e => setPassword(e.target.value)}
-                        aria-invalid={strengthScore < 4}
+                        aria-invalid={strengthScore < 5}
                         placeholder="********"
                         {...props}
                     />
@@ -111,12 +113,12 @@ const PasswordInput = <T extends string>({ field, label, className, description,
                 role="progressbar"
                 aria-valuenow={strengthScore}
                 aria-valuemin={0}
-                aria-valuemax={4}
+                aria-valuemax={5}
                 aria-label="Password strength"
             >
                 <div
                     className={`h-full ${getStrengthColor(strengthScore)} transition-all duration-500 ease-out`}
-                    style={{ width: `${(strengthScore / 4) * 100}%` }}
+                    style={{ width: `${(strengthScore / 5) * 100}%` }}
                 ></div>
             </div>
 
