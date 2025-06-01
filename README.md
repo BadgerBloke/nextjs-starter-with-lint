@@ -1,63 +1,124 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NextJS Starter Template with Linting
 
-## Create NextJS App using this Example
+A modern, full-featured Next.js starter template utilizing the App Router,
+TypeScript, Tailwind CSS v4, and an extensive linting setup. The feat/clerk-auth
+branch enhances this foundation by integrating Clerk authentication with custom
+UI components, along with utilities like Zod and conform-to/react for robust
+form handling and validation.
+
+## 🚀 Features
+
+### Core Features (Available in trunk)
+
+- Next.js App Router: Utilizes the latest App Router for file-based routing.
+- TypeScript: Ensures type safety and developer productivity.
+- Tailwind CSS v4: Offers a utility-first CSS framework for rapid UI development.
+- ESLint & Prettier: Enforces consistent code style and formatting.
+- Husky & lint-staged: Automates code quality checks on commits.
+- Commitlint: Maintains standardized commit messages.
+- Bun Support: Includes a bun.lock file for Bun package manager compatibility.
+
+### Additional Features in feat/clerk-auth
+
+- Clerk Authentication: Integrates Clerk for user authentication with custom UI components.
+- Zod: Provides schema-based form validation.
+- conform-to/react: Enhances form handling with React.
+- shadcn UI Components: Tailored authentication UI built with Tailwind CSS.
+
+## 📦 Getting Started
+
+### Prerequisites
+
+- Node.js (v22 or later)
+- Package Manager: `pnpm`, `yarn`, `npm`, or `bun`
+
+### Installation
+
+1. Clone the Repository
 
 ```bash
-pnpm create next-app@latest --example https://github.com/MKSingh-Dev/nextjs-starter-with-lint
+git clone https://github.com/BadgerBloke/nextjs-starter-with-lint.git
+cd nextjs-starter-with-lint
 ```
 
-## Getting Started
-
-**A NextJS `app` router `TypeScript` and `TailwindCSS` starter template with `eslint`, `prettier`, and `husky` along with `lintstaged` configuration.**
-
-First, run the development server:
+2. Install Dependencies
+   Using `bun`
 
 ```bash
-pnpm dev
-# or
-yarn dev
-# or
-npm run dev
+bun install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Alternatively, use `yarn`, `npm`, or `pnpm` as per your preference.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Configure Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Copy the example environment file and set the necessary variables:
 
-## Update the Dependencies
-
-NextJS default dependencies
-
-```shell
-pnpm add next@latest react@latest react-dom@latest
+```bash
+cp env.example .env
 ```
 
-These are also NextJS's default but I've segregated these into devDependencies
+Note: For the feat/clerk-auth branch, ensure you set the Clerk-related
+environment variables as specified in the env.example file.
 
-```shell
-pnpm add -D @types/node@latest @types/react@latest @types/react-dom@latest autoprefixer@latest eslint@latest eslint-config-next@latest postcss@latest tailwindcss@latest typescript@latest
+4. Run the Development Server
+
+```bash
+bun dev
 ```
 
-Linting and Husky Dependencies<br/>
-📝 Updating the linting dependencies may break the linting flow in that case you should keep the current version of these dependencies.
+Open <http://localhost:3000> in your browser to view the application.
 
-```shell
-pnpm add -D @next/eslint-plugin-next@latest @typescript-eslint/eslint-plugin@latest eslint-config-google@latest eslint-config-prettier@latest eslint-config-standard-with-typescript@latest eslint-plugin-import@latest eslint-plugin-jsx-a11y@latest eslint-plugin-n@latest eslint-plugin-prettier@latest eslint-plugin-promise@latest eslint-plugin-react@latest eslint-plugin-react-hooks@latest eslint-plugin-simple-import-sort@latest husky lint-staged@latest match-sorter@latest prettier-plugin-tailwindcss@latest
+## 🛠️ Scripts
+
+| Scripts  | Description                            |
+| -------- | -------------------------------------- |
+| `dev`    | Starts the development servera         |
+| `build`  | Builds the application for productiona |
+| `start`  | Starts the production server           |
+| `lint`   | Runs ESLint for code linting           |
+| `format` | Formats code using Prettier            |
+
+## 🧪 Linting & Formatting
+
+This template includes a comprehensive linting and formatting setup:
+
+- ESLint: Configured with plugins for React, TypeScript, accessibility, and import sorting.
+- Prettier: Ensures consistent code formatting.
+- Husky & lint-staged: Automatically runs linting and formatting on staged files before commits.
+- Commitlint: Enforces conventional commit messages.
+
+## 🔐 Authentication with Clerk (Available in [`feat/clerk-auth`](https://github.com/BadgerBloke/nextjs-starter-with-lint/tree/feat/clerk-auth))
+
+The `feat/clerk-auth` branch integrates Clerk for authentication:
+
+- Custom UI Components: Authentication interfaces built with Tailwind CSS.
+- Protected Routes: Ensures secure access to authenticated pages.
+- Form Handling: Utilizes Zod and conform-to/react for robust form validation and handling.
+
+> Note: Ensure you have the necessary Clerk environment variables set in
+> your .env file.
+
+## 🧱 Project Structure
+
+```plaintext
+.
+├── .github/               # GitHub configurations
+├── .husky/                # Husky hooks
+├── public/                # Static assets
+├── src/                   # Application source code
+│   ├── app/               # Next.js App Router pages
+│   ├── components/        # Reusable UI components
+│   ├── lib/               # Utility functions and libraries
+│   ├── middleware.ts      # App middleware
+├── .prettierrc            # Prettier configuration
+├── env.example            # Example environment variables
+├── eslint.config.mjs      # ESLint configuration
+├── next.config.ts         # Next.js configuration
+└── tsconfig.json          # TypeScript configuration
+
 ```
 
-## Learn More
+## 📄 License
 
-To learn more about Next.js, take a look at the following resources:
-
--   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
--   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This project is licensed under the [MIT License]().
