@@ -45,8 +45,8 @@ const VerificationPage = () => {
                     });
 
                     if (res.status === 'complete') {
-                        setVerifyingNewAccount(false);
                         await setActive({ session: res.createdSessionId });
+                        setVerifyingNewAccount(false);
                         return router.replace('/dashboard');
                     }
                 }
@@ -68,6 +68,10 @@ const VerificationPage = () => {
             <CardContent>
                 <form id={form.id} onSubmit={form.onSubmit} className="grid gap-3">
                     <OtpInput label="Account verification code" name="code" />
+
+                    {/* CAPTCHA Widget */}
+                    <div id="clerk-captcha" />
+
                     <SubmitButton className="w-fit mt-4" submitting={isSubmitting}>
                         Submit
                     </SubmitButton>
