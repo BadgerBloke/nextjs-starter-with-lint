@@ -5,24 +5,24 @@ import Typography from '~/components/atoms/typography';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { Sheet, SheetClose, SheetContent } from '~/components/ui/sheet';
 
-const SHEET_SIDES = ['top', 'right', 'bottom', 'left'] as const;
-
-type SheetSide = (typeof SHEET_SIDES)[number];
+type SheetSide = 'top' | 'right' | 'bottom' | 'left';
 
 const SheetSide = ({
     children,
     trigger,
     open,
+    side = 'left',
     onClick,
 }: {
     children: React.ReactNode;
     trigger: JSX.Element;
     open: boolean;
+    side?: SheetSide;
     onClick: () => void;
 }) => {
     return (
         <Sheet open={open} onOpenChange={onClick}>
-            <SheetContent side="left" className="p-0">
+            <SheetContent side={side} className="p-0">
                 <div className="mb-4 flex w-full items-center justify-between p-4">
                     <Link href="/" className="flex items-center gap-2" onClick={onClick}>
                         <Typography variant="large">MKSingh</Typography>
