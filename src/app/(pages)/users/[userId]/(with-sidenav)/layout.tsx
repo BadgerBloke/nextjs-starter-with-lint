@@ -7,7 +7,7 @@ const PagesLayout = async ({ children, params }: { children: React.ReactNode; pa
     const { userId } = await params;
     return (
         <Fragment>
-            <Header className="sticky top-0 max-w-full bg-background/50 backdrop-blur-md sm:px-4" />
+            <Header />
             <div className="flex w-full">
                 <Navigation orgId={userId}>{children}</Navigation>
             </div>

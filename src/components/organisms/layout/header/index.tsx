@@ -1,144 +1,183 @@
-'use client';
-import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
-import { v4 as uuid } from 'uuid';
 
-import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
-
-import Typography from '~/components/atoms/typography';
-import ModeToggle from '~/components/molecules/mode-toggle';
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
-import { Button, buttonVariants } from '~/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '~/components/ui/dropdown-menu';
+import Logo from '~/components/molecules/logo';
+import { Button } from '~/components/ui/button';
 import {
     NavigationMenu,
+    NavigationMenuContent,
     NavigationMenuItem,
     NavigationMenuLink,
     NavigationMenuList,
-    navigationMenuTriggerStyle,
+    NavigationMenuTrigger,
 } from '~/components/ui/navigation-menu';
-import { Separator } from '~/components/ui/separator';
-import { SheetClose } from '~/components/ui/sheet';
-import { IAM } from '~/lib/config';
-import { headerMenu } from '~/lib/constants/header-menus';
-import { UserData } from '~/lib/interfaces/user';
+import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { cn } from '~/lib/utils';
 
-import NavAccordion from './nav-accordion';
-import NavMenuDropdown from './nav-dropdown';
-import Pannel from './pannel';
+import { NavItem } from './interfaces';
 
-const Header = ({ userData, channelId, className }: { userData?: UserData; channelId?: string; className?: string }) => {
-    const [open, setOpen] = useState(false);
-    const pathname = usePathname();
-    return (
-        <header className={cn('mx-auto flex h-[4.5rem] w-full max-w-[1344px] items-center px-5 sm:px-10', className)}>
-            <Link href="/" className="flex items-center gap-2 lg:min-w-48 px-2" onClick={() => setOpen(false)}>
-                <Typography variant="large">MKSingh</Typography>
-            </Link>
-            <div className="ml-auto flex items-center gap-3 xl:hidden">
-                <ModeToggle />
-                <Button variant="outline" size="icon" onClick={() => setOpen(open => !open)}>
-                    {open ? <Cross1Icon className="h-4 w-4" /> : <HamburgerMenuIcon className="h-4 w-4" />}
-                </Button>
-            </div>
-            <div
-                className={clsx(
-                    'absolute left-0 top-[4.375rem] z-20 hidden h-[calc(100vh-4.375rem)] w-full overflow-y-auto bg-[#E9E9E9] p-5 sm:px-10 xl:static xl:ml-20 xl:flex xl:h-auto xl:items-center xl:overflow-y-visible xl:bg-transparent xl:p-0 dark:bg-black xl:dark:bg-transparent'
-                )}
-            >
-                {/* Desktop Navigation Bar */}
-                <NavigationMenu className="hidden xl:block">
-                    <NavigationMenuList>
-                        {headerMenu(channelId)?.map(menu =>
-                            menu.children ? (
-                                <NavMenuDropdown key={uuid()} menu={menu} />
-                            ) : (
-                                <NavigationMenuItem key={uuid()} className="w-full" asChild>
-                                    <NavigationMenuLink asChild>
-                                        <Link href={menu.href} className={navigationMenuTriggerStyle()}>
-                                            {menu.text}
-                                        </Link>
-                                    </NavigationMenuLink>
+const navigationLinks: NavItem[] = [];
+
+const Header = () => (
+    <header className="flex h-16 items-center justify-between gap-4">
+        {/* Left side */}
+        <div className="flex items-center gap-2 w-full">
+            {/* Mobile menu trigger */}
+            <Popover>
+                <PopoverTrigger asChild>
+                    <Button className="group size-8 md:hidden" variant="ghost" size="icon">
+                        <svg
+                            className="pointer-events-none"
+                            width={16}
+                            height={16}
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M4 12L20 12"
+                                className="origin-center -translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-x-0 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[315deg]"
+                            />
+                            <path
+                                d="M4 12H20"
+                                className="origin-center transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.8)] group-aria-expanded:rotate-45"
+                            />
+                            <path
+                                d="M4 12H20"
+                                className="origin-center translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[135deg]"
+                            />
+                        </svg>
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="w-64 p-1 md:hidden">
+                    <NavigationMenu className="max-w-none *:w-full">
+                        <NavigationMenuList className="flex-col items-start gap-2">
+                            {navigationLinks.map((link, index) => (
+                                <NavigationMenuItem key={index} className="w-full">
+                                    {link.submenu ? (
+                                        <>
+                                            <div className="text-muted-foreground px-2 py-1.5 text-xs font-medium">
+                                                {link.label}
+                                            </div>
+                                            <ul>
+                                                {link.items.map((item, itemIndex) => (
+                                                    <li key={itemIndex}>
+                                                        <NavigationMenuLink href={item.href} className="py-1.5">
+                                                            {item.label}
+                                                        </NavigationMenuLink>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </>
+                                    ) : (
+                                        <NavigationMenuLink href={link.href} className="py-1.5">
+                                            {link.label}
+                                        </NavigationMenuLink>
+                                    )}
+                                    {/* Add separator between different types of items */}
+                                    {index < navigationLinks.length - 1 &&
+                                        // Show separator if:
+                                        // 1. One is submenu and one is simple link OR
+                                        // 2. Both are submenus but with different types
+                                        ((!link.submenu && navigationLinks[index + 1].submenu) ||
+                                            (link.submenu && !navigationLinks[index + 1].submenu) ||
+                                            (link.submenu &&
+                                                navigationLinks[index + 1].submenu &&
+                                                link.type !== navigationLinks[index + 1].type)) && (
+                                            <div
+                                                role="separator"
+                                                aria-orientation="horizontal"
+                                                className="bg-border -mx-1 my-1 h-px w-full"
+                                            />
+                                        )}
                                 </NavigationMenuItem>
-                            )
-                        )}
+                            ))}
+                            <NavigationMenuItem
+                                className={cn('w-full', clsx({ 'sr-only': !navigationLinks.length }))}
+                                role="presentation"
+                                aria-hidden="true"
+                            >
+                                <div
+                                    role="separator"
+                                    aria-orientation="horizontal"
+                                    className="bg-border -mx-1 my-1 h-px"
+                                ></div>
+                            </NavigationMenuItem>
+                        </NavigationMenuList>
+                    </NavigationMenu>
+                </PopoverContent>
+            </Popover>
+            {/* Main nav */}
+            <div className="flex items-center gap-4 w-full">
+                <Logo />
+                {/* Navigation menu */}
+                <NavigationMenu viewport={false} className="max-md:hidden">
+                    <NavigationMenuList className="gap-2">
+                        {navigationLinks.map((link, index) => (
+                            <NavigationMenuItem key={index}>
+                                {link.submenu ? (
+                                    <>
+                                        <NavigationMenuTrigger className="text-muted-foreground hover:text-primary bg-transparent px-2 py-1.5 font-medium *:[svg]:-me-0.5 *:[svg]:size-3.5">
+                                            {link.label}
+                                        </NavigationMenuTrigger>
+                                        <NavigationMenuContent className="data-[motion=from-end]:slide-in-from-right-16! data-[motion=from-start]:slide-in-from-left-16! data-[motion=to-end]:slide-out-to-right-16! data-[motion=to-start]:slide-out-to-left-16! z-50 p-1">
+                                            <ul className={cn(link.type === 'description' ? 'min-w-64' : 'min-w-48')}>
+                                                {link.items.map((item, itemIndex) => (
+                                                    <li key={itemIndex}>
+                                                        <NavigationMenuLink href={item.href} className="py-1.5">
+                                                            {/* Display icon if present */}
+                                                            {link.type === 'icon' && 'icon' in item && (
+                                                                <div className="flex items-center gap-2">
+                                                                    {
+                                                                        <item.icon
+                                                                            size={16}
+                                                                            className="text-foreground opacity-60"
+                                                                            aria-hidden="true"
+                                                                        />
+                                                                    }
+                                                                    <span>{item.label}</span>
+                                                                </div>
+                                                            )}
+
+                                                            {/* Display label with description if present */}
+                                                            {link.type === 'description' && 'description' in item ? (
+                                                                <div className="space-y-1">
+                                                                    <div className="font-medium">{item.label}</div>
+                                                                    <p className="text-muted-foreground line-clamp-2 text-xs">
+                                                                        {item.description}
+                                                                    </p>
+                                                                </div>
+                                                            ) : (
+                                                                // Display simple label if not icon or description type
+                                                                !link.type ||
+                                                                (link.type !== 'icon' && link.type !== 'description' && (
+                                                                    <span>{item.label}</span>
+                                                                ))
+                                                            )}
+                                                        </NavigationMenuLink>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </NavigationMenuContent>
+                                    </>
+                                ) : (
+                                    <NavigationMenuLink
+                                        href={link.href}
+                                        className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                                    >
+                                        {link.label}
+                                    </NavigationMenuLink>
+                                )}
+                            </NavigationMenuItem>
+                        ))}
                     </NavigationMenuList>
                 </NavigationMenu>
-
-                <div className="ml-auto flex flex-wrap items-center gap-5 xl:mt-0">
-                    {userData ? (
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Avatar className="cursor-pointer">
-                                    <AvatarImage src="" />
-                                    <AvatarFallback>
-                                        {userData.given_name.charAt(0) + (userData.family_name?.charAt(0) || '')}
-                                    </AvatarFallback>
-                                </Avatar>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                {/* <DropdownMenuItem> */}
-                                <Typography variant="p">{userData.name}</Typography>
-                                {/* </DropdownMenuItem> */}
-                                {/* <DropdownMenuItem> */}
-                                <Typography variant="muted">{userData.email}</Typography>
-                                <Separator className="my-1" />
-                                {/* </DropdownMenuItem> */}
-                                <DropdownMenuItem
-                                    asChild
-                                    className="cursor-pointer bg-destructive text-destructive-foreground"
-                                >
-                                    <a href={`${IAM.baseUrl}/api/logout`}>Logout</a>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    ) : (
-                        <Link className={buttonVariants()} href={`${IAM.baseUrl}/login?callback=${pathname}`}>
-                            Log in
-                        </Link>
-                    )}
-                    <ModeToggle />
-                </div>
             </div>
-
-            {/* Mobile Navigation Bar */}
-            <Pannel
-                onClick={() => setOpen(false)}
-                open={open}
-                trigger={
-                    <Button variant="outline" size="icon" className="ml-auto xl:hidden" onClick={() => setOpen(false)}>
-                        {open ? <Cross1Icon className="h-4 w-4" /> : <HamburgerMenuIcon className="h-4 w-4" />}
-                    </Button>
-                }
-            >
-                <div className="flex flex-col gap-2">
-                    {headerMenu(channelId)?.map(menu =>
-                        menu.children ? (
-                            <NavAccordion key={uuid()} item={menu} onClick={() => setOpen(false)} pathname={pathname} />
-                        ) : (
-                            <SheetClose asChild key={uuid()}>
-                                <Link
-                                    href={menu.href}
-                                    className={cn(
-                                        buttonVariants({ variant: 'ghost' }),
-                                        clsx({
-                                            'bg-muted/50': pathname === menu.href,
-                                        }),
-                                        'justify-start no-underline'
-                                    )}
-                                >
-                                    <menu.icon className="mr-2 h-5 w-5" /> {menu.text}
-                                </Link>
-                            </SheetClose>
-                        )
-                    )}
-                </div>
-            </Pannel>
-        </header>
-    );
-};
+        </div>
+    </header>
+);
 
 export default Header;
