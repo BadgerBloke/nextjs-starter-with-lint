@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { v4 as uuid } from 'uuid';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '~/components/ui/dropdown-menu';
 import { NavigationMenuItem, NavigationMenuTrigger } from '~/components/ui/navigation-menu';
@@ -14,7 +13,7 @@ const NavMenuDropdown = ({ menu }: { menu: HeaderMenuType }) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     {menu.children?.map(e => (
-                        <Link href={e.href} key={uuid()}>
+                        <Link href={e.href} key={e.id}>
                             <DropdownMenuItem className="cursor-pointer">{e.text}</DropdownMenuItem>
                         </Link>
                     ))}

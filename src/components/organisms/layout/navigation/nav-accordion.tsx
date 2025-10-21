@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import clsx from 'clsx';
-import { v4 as uuid } from 'uuid';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
 import { buttonVariants } from '~/components/ui/button';
@@ -32,7 +31,7 @@ const NavAccordion = ({ item, pathname, onClick }: { item: SideNavMenuType; path
                 <div className="mx-4 flex flex-col gap-1 rounded-md bg-muted/30">
                     {item.children?.map(e => (
                         <Link
-                            key={uuid()}
+                            key={e.id}
                             href={e.href}
                             onClick={onClick}
                             className={cn(

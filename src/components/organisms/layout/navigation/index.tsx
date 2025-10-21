@@ -3,7 +3,6 @@ import { Fragment, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
-import { v4 as uuid } from 'uuid';
 
 import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 import { IconMenuDeep } from '@tabler/icons-react';
@@ -31,10 +30,10 @@ const Navigation: React.FC<{
                     <div className="flex flex-col gap-2">
                         {sideNavMenu(orgId).map(menu =>
                             menu.children ? (
-                                <NavAccordion key={uuid()} item={menu} pathname={pathname} onClick={() => setOpen(false)} />
+                                <NavAccordion key={menu.id} item={menu} pathname={pathname} onClick={() => setOpen(false)} />
                             ) : (
                                 <Link
-                                    key={uuid()}
+                                    key={menu.id}
                                     href={menu.href}
                                     onClick={() => setOpen(false)}
                                     className={cn(
@@ -65,10 +64,10 @@ const Navigation: React.FC<{
                     <div className="flex flex-col gap-2">
                         {sideNavMenu(orgId).map(menu =>
                             menu.children ? (
-                                <NavAccordion key={uuid()} item={menu} pathname={pathname} onClick={() => setOpen(false)} />
+                                <NavAccordion key={menu.id} item={menu} pathname={pathname} onClick={() => setOpen(false)} />
                             ) : (
                                 <Link
-                                    key={uuid()}
+                                    key={menu.id}
                                     href={menu.href}
                                     onClick={() => setOpen(false)}
                                     className={cn(

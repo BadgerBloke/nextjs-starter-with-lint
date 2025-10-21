@@ -1,9 +1,9 @@
 'use client';
 import { useState } from 'react';
+import { Route } from 'next';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
-import { v4 as uuid } from 'uuid';
 
 import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 
@@ -54,9 +54,9 @@ const Header = ({ userData, channelId, className }: { userData?: UserData; chann
                     <NavigationMenuList>
                         {headerMenu(channelId)?.map(menu =>
                             menu.children ? (
-                                <NavMenuDropdown key={uuid()} menu={menu} />
+                                <NavMenuDropdown key={menu.id} menu={menu} />
                             ) : (
-                                <NavigationMenuItem key={uuid()} className="w-full" asChild>
+                                <NavigationMenuItem key={menu.id} className="w-full" asChild>
                                     <NavigationMenuLink asChild>
                                         <Link href={menu.href} className={navigationMenuTriggerStyle()}>
                                             {menu.text}
@@ -96,7 +96,7 @@ const Header = ({ userData, channelId, className }: { userData?: UserData; chann
                             </DropdownMenuContent>
                         </DropdownMenu>
                     ) : (
-                        <Link className={buttonVariants()} href={`${IAM.baseUrl}/login?callback=${pathname}`}>
+                        <Link className={buttonVariants()} href={`${IAM.baseUrl}/login?callback=${pathname}` as Route}>
                             Log in
                         </Link>
                     )}
@@ -117,9 +117,9 @@ const Header = ({ userData, channelId, className }: { userData?: UserData; chann
                 <div className="flex flex-col gap-2">
                     {headerMenu(channelId)?.map(menu =>
                         menu.children ? (
-                            <NavAccordion key={uuid()} item={menu} onClick={() => setOpen(false)} pathname={pathname} />
+                            <NavAccordion key={menu.id} item={menu} onClick={() => setOpen(false)} pathname={pathname} />
                         ) : (
-                            <SheetClose asChild key={uuid()}>
+                            <SheetClose asChild key={menu.id}>
                                 <Link
                                     href={menu.href}
                                     className={cn(
