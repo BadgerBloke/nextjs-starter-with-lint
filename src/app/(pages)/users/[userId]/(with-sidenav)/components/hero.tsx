@@ -30,7 +30,7 @@ const Hero: React.FC = () => (
                 access control has been built with Next.js 14 and open sourced. Follow along as we figure this out together.
             </p>
             <div className="space-x-4">
-                <Link href="/channels/undefined" className={cn(buttonVariants({ size: 'lg' }))}>
+                <Link href="/" className={cn(buttonVariants({ size: 'lg' }))}>
                     Get Started
                 </Link>
                 <Link
