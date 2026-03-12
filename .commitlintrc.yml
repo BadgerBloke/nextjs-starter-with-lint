@@ -6,6 +6,7 @@ rules:
         - 2
         - always
         - - core
+          - chore
           - ci
           - feat
           - fix
@@ -18,6 +19,7 @@ rules:
 help: |
     **Possible types**:
     `core`:             Change build process, tooling or dependencies.
+    `chore`:            Changes to the build process or tooling or dependencies.
     `ci`:               Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
     `feat`:             Adds a new feature.
     `fix`:              Solves a bug.
