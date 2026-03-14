@@ -7,12 +7,7 @@ import { SideNavMenuType } from '~/lib/constants/navigation-menus';
 import { cn } from '~/lib/utils';
 
 const NavAccordion = ({ item, pathname, onClick }: { item: SideNavMenuType; pathname: string; onClick: () => void }) => (
-    <Accordion
-        type="single"
-        collapsible
-        defaultValue={pathname.includes(item.href) ? item.href : undefined}
-        className="w-full"
-    >
+    <Accordion defaultValue={pathname.includes(item.href) ? [item.href] : undefined} className="w-full">
         <AccordionItem value={item.href} className="space-y-2 border-none">
             <AccordionTrigger
                 className={cn(

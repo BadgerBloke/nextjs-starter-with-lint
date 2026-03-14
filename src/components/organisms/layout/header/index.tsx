@@ -23,34 +23,32 @@ const Header = () => (
         <div className="flex items-center gap-2 w-full">
             {/* Mobile menu trigger */}
             <Popover>
-                <PopoverTrigger asChild>
-                    <Button className="group size-8 md:hidden" variant="ghost" size="icon">
-                        <svg
-                            className="pointer-events-none"
-                            width={16}
-                            height={16}
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M4 12L20 12"
-                                className="origin-center -translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-x-0 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[315deg]"
-                            />
-                            <path
-                                d="M4 12H20"
-                                className="origin-center transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.8)] group-aria-expanded:rotate-45"
-                            />
-                            <path
-                                d="M4 12H20"
-                                className="origin-center translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[135deg]"
-                            />
-                        </svg>
-                    </Button>
+                <PopoverTrigger render={<Button className="group size-8 md:hidden" variant="ghost" size="icon" />}>
+                    <svg
+                        className="pointer-events-none"
+                        width={16}
+                        height={16}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M4 12L20 12"
+                            className="origin-center -translate-y-1.75 transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-x-0 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-315"
+                        />
+                        <path
+                            d="M4 12H20"
+                            className="origin-center transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.8)] group-aria-expanded:rotate-45"
+                        />
+                        <path
+                            d="M4 12H20"
+                            className="origin-center translate-y-1.75 transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-y-0 group-aria-expanded:rotate-135"
+                        />
+                    </svg>
                 </PopoverTrigger>
                 <PopoverContent align="start" className="w-64 p-1 md:hidden">
                     <NavigationMenu className="max-w-none *:w-full">
@@ -114,7 +112,7 @@ const Header = () => (
             <div className="flex items-center gap-4 w-full">
                 <Logo />
                 {/* Navigation menu */}
-                <NavigationMenu viewport={false} className="max-md:hidden">
+                <NavigationMenu className="max-md:hidden">
                     <NavigationMenuList className="gap-2">
                         {navigationLinks.map((link, index) => (
                             <NavigationMenuItem key={index}>

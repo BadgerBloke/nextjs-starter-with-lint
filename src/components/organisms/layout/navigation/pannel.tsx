@@ -27,7 +27,7 @@ const SheetSide = ({
                     <Link href="/" className="flex items-center gap-2" onClick={onClick}>
                         <Typography variant="large">MKSingh</Typography>
                     </Link>
-                    <SheetClose asChild>{trigger}</SheetClose>
+                    <SheetClose render={trigger} />
                 </div>
                 <ScrollArea className="h-[calc(100vh-120px)] px-2">{children}</ScrollArea>
             </SheetContent>

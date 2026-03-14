@@ -8,9 +8,7 @@ const NavMenuDropdown = ({ menu }: { menu: HeaderMenuType }) => {
     return (
         <NavigationMenuItem>
             <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <NavigationMenuTrigger>{menu.text}</NavigationMenuTrigger>
-                </DropdownMenuTrigger>
+                <DropdownMenuTrigger render={<NavigationMenuTrigger />}>{menu.text}</DropdownMenuTrigger>
                 <DropdownMenuContent>
                     {menu.children?.map(e => (
                         <Link href={e.href} key={e.id}>

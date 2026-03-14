@@ -24,7 +24,7 @@ const Navigation: React.FC<{
     const pathname = usePathname();
     return (
         <Fragment>
-            <nav className="flex h-[calc(100dvh-4.75rem)] mt-1 w-fit max-w-xs flex-col lg:min-w-[220px]">
+            <nav className="flex h-[calc(100dvh-4.75rem)] mt-1 w-fit max-w-xs flex-col lg:min-w-55">
                 {/* Desktop Navigation Bar */}
                 <ScrollArea className="hidden h-[calc(100dvh-4.75rem)] mt-1 px-2 lg:block">
                     <div className="flex flex-col gap-2">
