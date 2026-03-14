@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
 
-const PagesLayout = ({ children }: { children: React.ReactNode }) => <Fragment>{children}</Fragment>;
+const PagesLayout = ({ children }: LayoutProps<'/'>) => <Fragment>{children}</Fragment>;
 
 export default PagesLayout;

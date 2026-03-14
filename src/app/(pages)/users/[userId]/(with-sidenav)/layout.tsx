@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import Header from '~/components/organisms/layout/header';
 import Navigation from '~/components/organisms/layout/navigation';
 
-const PagesLayout = async ({ children, params }: { children: React.ReactNode; params: Promise<{ userId: string }> }) => {
+const PagesLayout = async ({ children, params }: LayoutProps<'/users/[userId]'>) => {
     const { userId } = await params;
     return (
         <Fragment>
