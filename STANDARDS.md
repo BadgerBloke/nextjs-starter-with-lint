@@ -26,7 +26,7 @@
 - **Atoms** (`src/components/atoms/`) — Zero internal dependencies (no imports from molecules/organisms)
 - **Molecules** (`src/components/molecules/`) — May depend only on atoms
 - **Organisms** (`src/components/organisms/`) — May depend on atoms and/or molecules
-- Only **shared/reusable** components belong in `src/components/`. Page or layout-specific components do **not** go here
+- Only **shared** components belong in `src/components/`. "Shared" means the component is **imported in more than one place** — not merely rendered on multiple pages. A component imported once in a layout (even if that layout renders across many pages) is layout-specific, not shared
 
 ### Page/Layout-Specific Code
 
