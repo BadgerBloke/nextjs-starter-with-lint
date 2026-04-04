@@ -1,124 +1,83 @@
-# NextJS Starter Template with Linting
+# Next.js Starter Template
 
-A modern, full-featured Next.js starter template utilizing the App Router,
-TypeScript, Tailwind CSS v4, and an extensive linting setup. The feat/clerk-auth
-branch enhances this foundation by integrating Clerk authentication with custom
-UI components, along with utilities like Zod and conform-to/react for robust
-form handling and validation.
+A modern Next.js starter template with App Router, TypeScript, Tailwind CSS v4, shadcn/ui, and a comprehensive linting setup.
 
-## 🚀 Features
+## Features
 
-### Core Features (Available in trunk)
+- **Next.js 16** with App Router and Server Components
+- **TypeScript** in strict mode
+- **Tailwind CSS v4** with shadcn/ui components
+- **Atomic Design** component architecture (atoms, molecules, organisms)
+- **ESLint & Prettier** with plugins for React, TypeScript, accessibility, and import sorting
+- **Husky & lint-staged** for pre-commit code quality checks
+- **Commitlint** for conventional commit messages
+- **Bun** as the package manager
 
-- Next.js App Router: Utilizes the latest App Router for file-based routing.
-- TypeScript: Ensures type safety and developer productivity.
-- Tailwind CSS v4: Offers a utility-first CSS framework for rapid UI development.
-- ESLint & Prettier: Enforces consistent code style and formatting.
-- Husky & lint-staged: Automates code quality checks on commits.
-- Commitlint: Maintains standardized commit messages.
-- Bun Support: Includes a bun.lock file for Bun package manager compatibility.
-
-### Additional Features in feat/clerk-auth
-
-- Clerk Authentication: Integrates Clerk for user authentication with custom UI components.
-- Zod: Provides schema-based form validation.
-- conform-to/react: Enhances form handling with React.
-- shadcn UI Components: Tailored authentication UI built with Tailwind CSS.
-
-## 📦 Getting Started
+## Getting Started
 
 ### Prerequisites
 
 - Node.js (v22 or later)
-- Package Manager: `pnpm`, `yarn`, `npm`, or `bun`
+- [Bun](https://bun.sh/) (recommended) or any package manager (`pnpm`, `yarn`, `npm`)
 
 ### Installation
 
-1. Clone the Repository
-
 ```bash
-git clone https://github.com/BadgerBloke/nextjs-starter-with-lint.git
-cd nextjs-starter-with-lint
-```
-
-2. Install Dependencies
-   Using `bun`
-
-```bash
+git clone https://github.com/MKSinghDev/nextjs-starter.git
+cd nextjs-starter
 bun install
 ```
 
-Alternatively, use `yarn`, `npm`, or `pnpm` as per your preference.
-
-3. Configure Environment Variables
-
-Copy the example environment file and set the necessary variables:
-
-```bash
-cp env.example .env
-```
-
-Note: For the feat/clerk-auth branch, ensure you set the Clerk-related
-environment variables as specified in the env.example file.
-
-4. Run the Development Server
+### Development
 
 ```bash
 bun dev
 ```
 
-Open <http://localhost:3000> in your browser to view the application.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 🛠️ Scripts
+## Scripts
 
-| Scripts  | Description                            |
-| -------- | -------------------------------------- |
-| `dev`    | Starts the development servera         |
-| `build`  | Builds the application for productiona |
-| `start`  | Starts the production server           |
-| `lint`   | Runs ESLint for code linting           |
-| `format` | Formats code using Prettier            |
+| Script         | Description                              |
+| -------------- | ---------------------------------------- |
+| `dev`          | Start the development server             |
+| `build`        | Build for production                     |
+| `start`        | Start the production server              |
+| `lint`         | Run ESLint                               |
+| `lint:fix`     | Run ESLint with auto-fix                 |
+| `format`       | Format code with Prettier                |
+| `check-types`  | Type-check with TypeScript               |
+| `check-format` | Check formatting without writing         |
+| `test-all`     | Run format, lint, type-check, and build  |
 
-## 🧪 Linting & Formatting
-
-This template includes a comprehensive linting and formatting setup:
-
-- ESLint: Configured with plugins for React, TypeScript, accessibility, and import sorting.
-- Prettier: Ensures consistent code formatting.
-- Husky & lint-staged: Automatically runs linting and formatting on staged files before commits.
-- Commitlint: Enforces conventional commit messages.
-
-## 🔐 Authentication with Clerk (Available in [`feat/clerk-auth`](https://github.com/BadgerBloke/nextjs-starter-with-lint/tree/feat/clerk-auth))
-
-The `feat/clerk-auth` branch integrates Clerk for authentication:
-
-- Custom UI Components: Authentication interfaces built with Tailwind CSS.
-- Protected Routes: Ensures secure access to authenticated pages.
-- Form Handling: Utilizes Zod and conform-to/react for robust form validation and handling.
-
-> Note: Ensure you have the necessary Clerk environment variables set in
-> your .env file.
-
-## 🧱 Project Structure
-
-```plaintext
-.
-├── .github/               # GitHub configurations
-├── .husky/                # Husky hooks
-├── public/                # Static assets
-├── src/                   # Application source code
-│   ├── app/               # Next.js App Router pages
-│   ├── components/        # Reusable UI components
-│   ├── lib/               # Utility functions and libraries
-│   ├── middleware.ts      # App middleware
-├── .prettierrc            # Prettier configuration
-├── env.example            # Example environment variables
-├── eslint.config.mjs      # ESLint configuration
-├── next.config.ts         # Next.js configuration
-└── tsconfig.json          # TypeScript configuration
+## Project Structure
 
 ```
+.
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── (pages)/            # Route groups for pages
+│   │   ├── globals.css         # Global styles
+│   │   └── layout.tsx          # Root layout
+│   ├── components/
+│   │   ├── atoms/              # Basic building blocks (no internal deps)
+│   │   ├── molecules/          # Composed from atoms only
+│   │   ├── organisms/          # Composed from atoms and/or molecules
+│   │   └── ui/                 # shadcn/ui components (CLI-managed)
+│   ├── hooks/                  # Shared custom hooks
+│   └── lib/                    # Utilities, constants, interfaces, config
+├── CLAUDE.md                   # AI agent instructions
+├── AGENTS.md                   # Next.js agent rules
+├── STANDARDS.md                # Project coding standards
+├── eslint.config.mjs           # ESLint configuration
+├── next.config.ts              # Next.js configuration
+└── tsconfig.json               # TypeScript configuration
+```
 
-## 📄 License
+## Standards
 
-This project is licensed under the [MIT License]().
+See [STANDARDS.md](./STANDARDS.md) for the full coding standards covering naming conventions, component architecture, styling, testing, and more.
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE).
