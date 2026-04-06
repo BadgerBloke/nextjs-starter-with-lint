@@ -34,6 +34,45 @@
 - The `_local/` folder holds everything specific to that page/layout: components, server actions, CSS files, etc.
 - The underscore prefix ensures Next.js excludes it from routing
 
+### `_local/` File Organization
+
+Organize `_local/` by concern, not by file type:
+
+- **`interfaces.ts`** — Shared types and interfaces used across multiple files within this `_local/`
+- **`mock-constants.ts`** (or `constants.ts`) — Static data, enums, lookup maps. Will become API calls later
+- **`util.ts`** — Pure utility functions (formatters, helpers) specific to this page
+- **`*-actions.ts`** — Server actions (`'use server'`)
+- **Component files** — One component per file; default export; arrow function expression
+
+When a section (e.g. a tab) has its own interactive sub-components, give it a **folder**:
+
+```
+_local/
+├── interfaces.ts
+├── mock-constants.ts
+├── util.ts
+├── payment-actions.ts
+├── payments-tabs.tsx          ← thin shell, composes children
+├── collections-tab/
+│   ├── index.tsx              ← server component (table)
+│   └── refund-button.tsx      ← 'use client' (only the interactive part)
+├── payouts-tab/
+│   ├── index.tsx
+│   └── payout-button.tsx
+└── revenue-summary-tab.tsx    ← flat file when no interactivity needed
+```
+
+When a section is simple (no interactive sub-parts), keep it as a **flat file** — no folder needed.
+
+### Client Boundary Rules
+
+- **Push `'use client'` to the deepest leaf possible** — never mark a parent client just because a child needs interactivity
+- Extract only the interactive element (a button, a form input, a toggle) into its own tiny `'use client'` file
+- Parent components stay server-rendered and **compose** client children
+- A server component CAN import and render a client component from shadcn (e.g. `Tabs`, `Sheet`) — the server component itself does not need `'use client'` for this
+- Use library primitives (e.g. `SheetClose` with `render` prop) to avoid `useState` entirely when possible
+- Use `PropsWithChildren` from React instead of custom `{ children: React.ReactNode }` interfaces
+
 ## Styling
 
 - **Tailwind utilities + shadcn/ui CSS variables** for theming
