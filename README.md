@@ -66,9 +66,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 │   │   └── ui/                 # shadcn/ui components (CLI-managed)
 │   ├── hooks/                  # Shared custom hooks
 │   └── lib/                    # Utilities, constants, interfaces, config
-├── CLAUDE.md                   # AI agent instructions
+├── CLAUDE.md                   # AI agent instructions (imports the files below)
 ├── AGENTS.md                   # Next.js agent rules
 ├── STANDARDS.md                # Project coding standards
+├── SKILLS.md                   # Recommended Claude Code skills
 ├── eslint.config.mjs           # ESLint configuration
 ├── next.config.ts              # Next.js configuration
 └── tsconfig.json               # TypeScript configuration
@@ -77,6 +78,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## Standards
 
 See [STANDARDS.md](./STANDARDS.md) for the full coding standards covering naming conventions, component architecture, styling, testing, and more.
+
+## Claude Code Skills
+
+This project recommends a set of Claude Code skills that extend the AI agent with project-specific tooling (e.g. shadcn component registry access). See [SKILLS.md](./SKILLS.md) for the list and install commands.
 
 ## License
 

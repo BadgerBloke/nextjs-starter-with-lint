@@ -1,2 +1,3 @@
 @AGENTS.md
 @STANDARDS.md
+@SKILLS.md
