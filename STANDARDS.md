@@ -12,7 +12,7 @@
 - **Hybrid approach**: Atomic design (`atoms/`, `molecules/`, `organisms/`) for shared/reusable components, feature-based folders for page-specific code
 - Pages go in `src/app/(pages)/` using route groups
 - Shared utilities in `src/lib/`
-- Shared UI primitives (shadcn/ui) in `src/components/ui/`
+- Shared UI primitives in `src/components/ui/` (installed via the registry CLI documented in `SKILLS.md`)
 
 ## Component Architecture
 
@@ -22,7 +22,7 @@
 
 ### Atomic Design Rules
 
-- **`src/components/ui/`** — Reserved for shadcn/ui. Never manually create or edit files here; components are added only via the shadcn CLI
+- **`src/components/ui/`** — Reserved exclusively for registry-installed UI primitives. Components here are added **only** via the registry CLI(s) and install-time rules documented in `SKILLS.md` — never hand-written or manually edited. No custom/hand-written component ever belongs in `ui/`; custom work goes into `atoms/`, `molecules/`, `organisms/`, or a page's `_local/` folder. Refer to `SKILLS.md` for the current list of supported registries and the priority order between them
 - **Atoms** (`src/components/atoms/`) — Zero internal dependencies (no imports from molecules/organisms)
 - **Molecules** (`src/components/molecules/`) — May depend only on atoms
 - **Organisms** (`src/components/organisms/`) — May depend on atoms and/or molecules
@@ -69,14 +69,14 @@ When a section is simple (no interactive sub-parts), keep it as a **flat file** 
 - **Push `'use client'` to the deepest leaf possible** — never mark a parent client just because a child needs interactivity
 - Extract only the interactive element (a button, a form input, a toggle) into its own tiny `'use client'` file
 - Parent components stay server-rendered and **compose** client children
-- A server component CAN import and render a client component from shadcn (e.g. `Tabs`, `Sheet`) — the server component itself does not need `'use client'` for this
+- A server component CAN import and render a client component from `src/components/ui/` (e.g. `Tabs`, `Sheet`) — the server component itself does not need `'use client'` for this
 - Use library primitives (e.g. `SheetClose` with `render` prop) to avoid `useState` entirely when possible
 - Use `PropsWithChildren` from React instead of custom `{ children: React.ReactNode }` interfaces
 
 ## Styling
 
-- **Tailwind utilities + shadcn/ui CSS variables** for theming
-- Use shadcn/ui theme tokens (CSS variables) for colors, spacing, and design consistency
+- **Tailwind utilities + project theme tokens (CSS variables)** for theming — the tokens are defined in `globals.css` and shared by every primitive in `src/components/ui/`, regardless of which registry it came from
+- Use the project's theme tokens (CSS variables) for colors, spacing, and design consistency — never hard-code colors or spacing that bypass the token system
 - **`globals.css` stays clean** — only truly global styles belong there
 - When a page or layout needs unique/heavy styling, create a **separate CSS file co-located inside that page's or layout's feature folder** — never dump page-specific styles into `globals.css`
 - **Tailwind-first even in custom CSS files** — use `@apply` to compose Tailwind utilities into custom classes, and CSS variables for theming
