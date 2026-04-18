@@ -17,7 +17,7 @@ A modern Next.js starter template with App Router, TypeScript, Tailwind CSS v4, 
 
 ### Prerequisites
 
-- Node.js (v22 or later)
+- Node.js (v24 or later)
 - [Bun](https://bun.sh/) (recommended) or any package manager (`pnpm`, `yarn`, `npm`)
 
 ### Installation
@@ -38,17 +38,17 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Scripts
 
-| Script         | Description                              |
-| -------------- | ---------------------------------------- |
-| `dev`          | Start the development server             |
-| `build`        | Build for production                     |
-| `start`        | Start the production server              |
-| `lint`         | Run ESLint                               |
-| `lint:fix`     | Run ESLint with auto-fix                 |
-| `format`       | Format code with Prettier                |
-| `check-types`  | Type-check with TypeScript               |
-| `check-format` | Check formatting without writing         |
-| `test-all`     | Run format, lint, type-check, and build  |
+| Script         | Description                             |
+| -------------- | --------------------------------------- |
+| `dev`          | Start the development server            |
+| `build`        | Build for production                    |
+| `start`        | Start the production server             |
+| `lint`         | Run ESLint                              |
+| `lint:fix`     | Run ESLint with auto-fix                |
+| `format`       | Format code with Prettier               |
+| `check-types`  | Type-check with TypeScript              |
+| `check-format` | Check formatting without writing        |
+| `test-all`     | Run format, lint, type-check, and build |
 
 ## Project Structure
 
