@@ -1,6 +1,5 @@
-import Link from 'next/link';
-
 import Typography from '~/components/atoms/typography';
+import { Link } from '~/i18n/navigation';
 
 const Logo = ({ hidden = false }: { hidden?: boolean }) => {
     if (hidden) return null;

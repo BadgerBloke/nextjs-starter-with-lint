@@ -1,5 +1,8 @@
 import clsx from 'clsx';
 
+import { HugeiconsIcon } from '@hugeicons/react';
+
+import LocaleSwitcher from '~/components/molecules/locale-switcher';
 import Logo from '~/components/molecules/logo';
 import { Button } from '~/components/ui/button';
 import {
@@ -14,7 +17,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover
 import { cn } from '~/lib/utils';
 
 import { NavItem } from './interfaces';
-import LocaleSwitcher from './locale-switcher';
 
 const navigationLinks: NavItem[] = [];
 
@@ -130,13 +132,13 @@ const Header = () => (
                                                             {/* Display icon if present */}
                                                             {link.type === 'icon' && 'icon' in item && (
                                                                 <div className="flex items-center gap-2">
-                                                                    {
-                                                                        <item.icon
-                                                                            size={16}
-                                                                            className="text-foreground opacity-60"
-                                                                            aria-hidden="true"
-                                                                        />
-                                                                    }
+                                                                    <HugeiconsIcon
+                                                                        icon={item.icon}
+                                                                        strokeWidth={2}
+                                                                        size={16}
+                                                                        className="text-foreground opacity-60"
+                                                                        aria-hidden="true"
+                                                                    />
                                                                     <span>{item.label}</span>
                                                                 </div>
                                                             )}

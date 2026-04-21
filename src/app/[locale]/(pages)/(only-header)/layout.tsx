@@ -1,4 +1,4 @@
-import Header from '~/components/organisms/layout/header';
+import Header from './_local';
 
 const PagesLayout = ({ children }: LayoutProps<'/[locale]'>) => (
     <div className="relative flex flex-col flex-1">

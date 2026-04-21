@@ -1,3 +1,3 @@
-import NotFoundPage from '~/components/organisms/not-found';
+import NotFoundPage from '~/components/molecules/not-found';
 
 export default NotFoundPage;

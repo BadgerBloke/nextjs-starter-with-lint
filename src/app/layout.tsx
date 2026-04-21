@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 
 import { ThemeProvider } from '~/components/molecules/theme-provider';
 import { Toaster } from '~/components/ui/sonner';
+import { TooltipProvider } from '~/components/ui/tooltip';
 import { cn } from '~/lib/utils';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -20,7 +21,7 @@ const RootLayout = ({ children }: LayoutProps<'/'>) => {
             <body className={cn(inter.className, 'flex flex-col min-h-svh antialiased')}>
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
                     <Toaster richColors />
-                    {children}
+                    <TooltipProvider>{children}</TooltipProvider>
                 </ThemeProvider>
             </body>
         </html>

@@ -161,6 +161,24 @@
         }
     }
 
+    @keyframes collapsible-down {
+        from {
+            height: 0;
+        }
+        to {
+            height: var(--collapsible-panel-height);
+        }
+    }
+
+    @keyframes collapsible-up {
+        from {
+            height: var(--collapsible-panel-height);
+        }
+        to {
+            height: 0;
+        }
+    }
+
     @keyframes floatParticle {
         0%,
         100% {
@@ -198,6 +216,8 @@
     /* Animation variables */
     --animate-accordion-down: accordion-down 0.2s ease-out;
     --animate-accordion-up: accordion-up 0.2s ease-out;
+    --animate-collapsible-down: collapsible-down 0.2s ease-out;
+    --animate-collapsible-up: collapsible-up 0.2s ease-out;
     --animate-float-particle: floatParticle 15s ease infinite;
     --animate-wave: moveWave 15s linear infinite;
     --animate-slide-infinite: slide-infinite 20s linear infinite;
@@ -231,10 +251,10 @@
 
 @layer utilities {
     .brand-gradient {
-        @apply bg-gradient-to-r from-sky-500 via-purple-500 to-pink-500 text-white shadow-sm transition-opacity hover:opacity-90;
+        @apply bg-linear-to-r from-sky-500 via-purple-500 to-pink-500 text-white shadow-sm transition-opacity hover:opacity-90;
     }
     .brand-gradient-text {
-        @apply bg-gradient-to-r from-sky-500 via-purple-500 to-pink-500 bg-clip-text text-transparent;
+        @apply bg-linear-to-r from-sky-500 via-purple-500 to-pink-500 bg-clip-text text-transparent;
     }
 }
 

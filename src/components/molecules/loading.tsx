@@ -1,4 +1,5 @@
-import { IconLoader2 } from '@tabler/icons-react';
+import { Loading01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 
 import Typography, { TypographyVariant } from '../atoms/typography';
 
@@ -11,7 +12,7 @@ interface LoaderProps {
 
 const Loader: React.FC<LoaderProps> = ({ message = 'Loading...', size = 20, messageClass, variant = 'small' }) => (
     <div className="m-auto flex h-full w-full flex-col items-center justify-center">
-        <IconLoader2 style={{ height: `${size}px`, width: `${size}px` }} className="animate-spin" />
+        <HugeiconsIcon icon={Loading01Icon} strokeWidth={2} size={size} className="animate-spin" />
         {message ? (
             <Typography variant={variant} className={messageClass}>
                 {message}

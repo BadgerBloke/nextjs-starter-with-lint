@@ -1,4 +1,4 @@
-import Loader from '~/components/organisms/loading';
+import Loader from '~/components/molecules/loading';
 
 const MainLoader = () => <Loader />;
 

@@ -1,4 +1,4 @@
-import { LucideIcon } from 'lucide-react';
+import type { IconSvgElement } from '@hugeicons/react';
 
 interface SimpleNavItem {
     label: string;
@@ -7,7 +7,7 @@ interface SimpleNavItem {
 
 interface IconNavItem {
     label: string;
-    icon: LucideIcon;
+    icon: IconSvgElement;
     href: string;
 }
 

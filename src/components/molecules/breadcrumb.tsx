@@ -1,47 +1,62 @@
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
-import { IconChevronRight, IconLayoutDashboard } from '@tabler/icons-react';
+import { ArrowRight01Icon, DashboardSquare02Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 
-import { BreadcrumbItemType, generateItems } from '~/lib/constants/navigation-menus';
+import { Link } from '~/i18n/navigation';
+import { projectNav } from '~/lib/constants/project-nav';
 import { cn } from '~/lib/utils';
+import { buildCrumbs } from '~/lib/utils/breadcrumb';
 
 import Typography from '../atoms/typography';
 import { buttonVariants } from '../ui/button';
 
 export interface BreadcrumbProps {
-    items?: BreadcrumbItemType;
-    pathname?: string;
+    pathname: string;
+    projectId: string;
 }
 
-const Breadcrumb = ({ items, pathname }: BreadcrumbProps) => {
-    const itemsArray = pathname ? generateItems(pathname) : items;
+const Breadcrumb = ({ pathname, projectId }: BreadcrumbProps) => {
+    const t = useTranslations('nav');
+    const crumbs = buildCrumbs(pathname, projectNav(projectId));
+
+    if (!crumbs.length) return null;
+
     return (
         <div className="flex w-full flex-wrap items-center gap-2">
-            {itemsArray?.map((item, index) =>
-                index === itemsArray.length - 1 ? (
-                    <Typography variant="muted" key={item.id}>
-                        <span className="flex cursor-not-allowed items-center gap-1">
-                            {index === 0 && <IconLayoutDashboard className="h-4 w-4" />} {item.label}
-                        </span>
-                    </Typography>
-                ) : item.href && item.havePage ? (
-                    <Link href={item.href} key={item.id} className={cn(buttonVariants({ variant: 'link' }), 'h-fit p-0')}>
+            {crumbs.map((crumb, index) => {
+                const isLast = index === crumbs.length - 1;
+                const label = t(crumb.labelKey);
+                const leadIcon =
+                    index === 0 ? <HugeiconsIcon icon={DashboardSquare02Icon} strokeWidth={2} className="h-4 w-4" /> : null;
+                const trailIcon = !isLast ? (
+                    <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="text-brand h-4 w-4" />
+                ) : null;
+
+                if (isLast || !crumb.href) {
+                    return (
+                        <Typography variant={isLast ? 'muted' : 'small'} key={`${crumb.labelKey}-${index}`}>
+                            <span className="flex cursor-not-allowed items-center gap-1">
+                                {leadIcon} {label} {trailIcon}
+                            </span>
+                        </Typography>
+                    );
+                }
+
+                return (
+                    <Link
+                        href={crumb.href}
+                        key={`${crumb.labelKey}-${index}`}
+                        className={cn(buttonVariants({ variant: 'link' }), 'h-fit p-0')}
+                    >
                         <Typography variant="small">
                             <span className="flex items-center gap-1">
-                                {index === 0 && <IconLayoutDashboard className="h-4 w-4" />} {item.label}{' '}
-                                <IconChevronRight className="text-brand h-4 w-4" />
+                                {leadIcon} {label} {trailIcon}
                             </span>
                         </Typography>
                     </Link>
-                ) : (
-                    <Typography variant="small" key={item.id}>
-                        <span className="flex cursor-not-allowed items-center gap-1 capitalize text-muted-foreground">
-                            {index === 0 && <IconLayoutDashboard className="h-4 w-4" />} {item.label}{' '}
-                            <IconChevronRight className="text-brand h-4 w-4" />
-                        </span>
-                    </Typography>
-                )
-            )}
+                );
+            })}
         </div>
     );
 };
