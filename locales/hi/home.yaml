@@ -1,0 +1,15 @@
+title: Next.js Starter में आपका स्वागत है
+lead: यह टेम्पलेट next-intl के साथ पूर्ण i18n लेकर आता है — YAML स्रोत, रनटाइम पर JSON, हर locale में type-safe keys।
+currentLocale: आप देख रहे हैं
+configHeading: i18n कॉन्फ़िगरेशन
+configItems:
+    translations: locales/[locale]/*.yaml में अनुवाद संपादित करें
+    routing: रूटिंग और डिफ़ॉल्ट locale — src/i18n/routing.ts
+    bases: Base/overlay मैप — src/i18n/bases.ts
+    switcher: Locale switcher — src/components/organisms/layout/header/locale-switcher.tsx
+removalHeading: i18n की ज़रूरत नहीं?
+removalAi: Claude के साथ — "remove i18n" कहकर remove-i18n skill चलाएँ।
+removalManual: Claude के बिना — .claude/skills/remove-i18n/SKILL.md में checklist देखें।
+docsHeading: और पढ़ें
+docsReadme: README — प्रोजेक्ट अवलोकन
+docsStandards: STANDARDS — पूर्ण i18n पैटर्न और locale जोड़ने की विधि

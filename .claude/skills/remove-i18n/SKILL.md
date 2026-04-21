@@ -17,16 +17,16 @@ Invoke when the user wants to:
 
 Do NOT use if the user just wants to:
 
-- Add/remove a single locale → edit `src/i18n/routing.ts` + `src/i18n/bases.ts` instead
+- Add/remove a single locale → edit `src/i18n/routing.ts` + `src/i18n/bases.ts`, and add/remove the `locales/<locale>/` dir
 - Change the default locale → edit `routing.defaultLocale`
-- Edit translations → edit `messages/<locale>/*.yaml`
+- Edit translations → edit `locales/<locale>/*.yaml` (never touch the generated `messages/` dir)
 
 If the user's intent is ambiguous, ask via `AskUserQuestion` before destroying files.
 
 ## Preconditions — verify before touching anything
 
 1. `git status` is clean (or user has explicitly confirmed uncommitted work is OK to lose). If dirty, stop and ask.
-2. `messages/`, `src/i18n/`, `src/proxy.ts`, `src/global.d.ts` exist — confirms template is in the post-i18n state. If already absent, report "i18n not present" and exit.
+2. `locales/`, `src/i18n/`, `src/proxy.ts`, `src/global.d.ts` exist — confirms template is in the post-i18n state (`messages/` may or may not exist; it's a generated dir). If all absent, report "i18n not present" and exit.
 3. User-authored code depending on i18n imports (`next-intl`, `~/i18n/...`, `useTranslations`, `getTranslations`, `~/i18n/navigation`) exists only inside files this skill already rewrites. Grep the codebase:
     ```
     Grep pattern="next-intl|~/i18n/|useTranslations|getTranslations" glob="src/**/*.{ts,tsx}"
@@ -74,6 +74,7 @@ For each hit, restore the original literal text or remove the translated string.
 ### 4. Delete i18n files and dirs
 
 ```
+rm -rf locales
 rm -rf messages
 rm -rf src/i18n
 rm -f src/proxy.ts
@@ -81,7 +82,7 @@ rm -f src/global.d.ts
 rm -f scripts/gen-messages.ts
 ```
 
-If `scripts/` becomes empty, delete it.
+If `scripts/` becomes empty, delete it. `messages/` is gitignored but may still exist on disk from a previous `gen:i18n` run — remove it regardless.
 
 ### 5. Revert `next.config.ts`
 
@@ -116,15 +117,15 @@ Use `bun remove next-intl yaml chokidar concurrently` — let Bun update `packag
 Remove the i18n block:
 
 ```
-# i18n generated JSON (compiled from YAML by scripts/gen-messages.ts)
-/messages/**/*.json
+# i18n generated output (compiled from locales/*.yaml by scripts/gen-messages.ts)
+/messages
 ```
 
 ### 8. Revert `README.md`
 
 - Remove the `next-intl` bullet from the Features list.
 - Revert the Scripts table to the pre-i18n version (drop `gen:i18n`, `gen:i18n:watch`, drop the YAML-compile notes from `dev`/`build`/`check-types`).
-- Revert the Project Structure tree: drop `messages/`, `scripts/`, `src/i18n/`, `src/global.d.ts`, `src/proxy.ts`, and the `[locale]/` line under `src/app/`.
+- Revert the Project Structure tree: drop `locales/`, `messages/`, `scripts/`, `src/i18n/`, `src/global.d.ts`, `src/proxy.ts`, and the `[locale]/` line under `src/app/`.
 - Delete the entire `## Internationalization` section and its pointer to STANDARDS.md.
 - The `## Internationalization` link in the Standards section (if any) should be removed.
 

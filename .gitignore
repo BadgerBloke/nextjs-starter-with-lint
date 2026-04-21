@@ -38,8 +38,8 @@ next-env.d.ts
 # test data
 /src/data
 
-# i18n generated JSON (compiled from YAML by scripts/gen-messages.ts)
-/messages/**/*.json
+# i18n generated output (compiled from locales/*.yaml by scripts/gen-messages.ts)
+/messages
 
 # Claude Code local settings (permissions, disabled servers)
 .claude/settings.local.json

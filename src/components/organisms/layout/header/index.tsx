@@ -14,13 +14,14 @@ import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover
 import { cn } from '~/lib/utils';
 
 import { NavItem } from './interfaces';
+import LocaleSwitcher from './locale-switcher';
 
 const navigationLinks: NavItem[] = [];
 
 const Header = () => (
     <header className="flex h-16 items-center justify-between gap-4">
         {/* Left side */}
-        <div className="flex items-center gap-2 w-full">
+        <div className="flex items-center gap-2 flex-1">
             {/* Mobile menu trigger */}
             <Popover>
                 <PopoverTrigger render={<Button className="group size-8 md:hidden" variant="ghost" size="icon" />}>
@@ -174,6 +175,10 @@ const Header = () => (
                     </NavigationMenuList>
                 </NavigationMenu>
             </div>
+        </div>
+        {/* Right side */}
+        <div className="flex items-center gap-2 shrink-0">
+            <LocaleSwitcher />
         </div>
     </header>
 );

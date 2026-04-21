@@ -57,13 +57,14 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ```
 .
-├── messages/                   # i18n dictionaries (YAML authored, JSON generated)
+├── locales/                    # i18n YAML source (committed)
 │   ├── en/                     # base locale (full dict)
-│   ├── en-GB/ en-US/           # regional overlays (partial deltas)
+│   ├── en-GB/ en-US/           # regional overlays (partial deltas or .gitkeep)
 │   ├── es/ es-ES/ es-MX/
 │   └── hi/ hi-IN/
+├── messages/                   # i18n generated output (JSON + index.ts, GITIGNORED)
 ├── scripts/
-│   └── gen-messages.ts         # YAML → JSON compiler (one-shot + watch)
+│   └── gen-messages.ts         # locales/ → messages/ compiler (one-shot + watch)
 ├── src/
 │   ├── app/                    # Next.js App Router
 │   │   ├── [locale]/           # all routes nested under locale segment
@@ -91,9 +92,9 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Internationalization
 
-- URL locales are **regional variants only** (`en-US`, `en-GB`, `es-ES`, `es-MX`, `hi-IN`). Listed in `src/i18n/routing.ts`
+- URL locales are **regional variants only** (`en-US`, `en-GB`, `es-ES`, `es-MX`, `hi-IN`). Listed in `src/i18n/routing.ts`. Default locale serves on clean paths (`/`, `/users`) via `localePrefix: 'as-needed'`; non-default keeps the prefix (`/es-MX`, `/es-MX/users`)
 - Each regional variant maps to a **base locale** (`en`, `es`, `hi`) via `baseOf` in `src/i18n/bases.ts`. Bases are never URL-addressable
-- Dictionaries authored in **YAML** under `messages/<locale>/*.yaml`. Compiled to `.json` by `scripts/gen-messages.ts` (gitignored, regenerated on every build / dev / check-types)
+- Dictionaries authored in **YAML** under `locales/<locale>/*.yaml` (committed). Compiled to `messages/<locale>/*.json` + per-locale `index.ts` by `scripts/gen-messages.ts` (`messages/` is fully gitignored; regenerated on every build / dev / check-types)
 - Runtime deep-merges base dict + regional overlay per request. Overlays hold only the keys that differ
 - Keys are fully type-checked — `useTranslations('home')` and `t('title')` autocomplete against the `en` reference shape
 

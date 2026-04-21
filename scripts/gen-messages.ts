@@ -3,42 +3,85 @@ import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parse } from 'yaml';
 
-const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', 'messages');
+const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const SRC = path.join(REPO, 'locales');
+const OUT = path.join(REPO, 'messages');
 
-const yamlToJson = (yamlPath: string) => yamlPath.replace(/\.yaml$/, '.json');
+const kebabToCamel = (s: string) => s.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 
-const compile = async (yamlPath: string) => {
-    const raw = await readFile(yamlPath, 'utf-8');
-    const parsed = parse(raw);
-    const jsonPath = yamlToJson(yamlPath);
-    await mkdir(path.dirname(jsonPath), { recursive: true });
-    await writeFile(jsonPath, `${JSON.stringify(parsed, null, 4)}\n`);
-    console.log(`[i18n] ${path.relative(ROOT, yamlPath)} -> ${path.relative(ROOT, jsonPath)}`);
+const localeDirs = async () => {
+    const entries = await readdir(SRC, { withFileTypes: true });
+    return entries.filter(e => e.isDirectory()).map(e => e.name);
 };
 
-const removeJson = async (yamlPath: string) => {
-    const jsonPath = yamlToJson(yamlPath);
-    await rm(jsonPath, { force: true });
-    console.log(`[i18n] removed ${path.relative(ROOT, jsonPath)}`);
+const yamlsIn = async (locale: string) => {
+    try {
+        const files = await readdir(path.join(SRC, locale));
+        return files.filter(f => f.endsWith('.yaml')).sort();
+    } catch {
+        return [];
+    }
+};
+
+const writeIndex = async (outDir: string, names: string[]) => {
+    const indexPath = path.join(outDir, 'index.ts');
+    if (!names.length) {
+        await writeFile(indexPath, 'export default {};\n');
+        return;
+    }
+    const sorted = [...names].sort();
+    const imports = sorted.map(n => `import ${kebabToCamel(n)} from './${n}.json';`).join('\n');
+    const body = sorted.map(kebabToCamel).join(', ');
+    await writeFile(indexPath, `${imports}\n\nexport default { ${body} };\n`);
+};
+
+const compileLocale = async (locale: string) => {
+    const outDir = path.join(OUT, locale);
+    await mkdir(outDir, { recursive: true });
+    const yamls = await yamlsIn(locale);
+    const names: string[] = [];
+    for (const y of yamls) {
+        const raw = await readFile(path.join(SRC, locale, y), 'utf-8');
+        const name = y.replace(/\.yaml$/, '');
+        const json = `${JSON.stringify(parse(raw), null, 4)}\n`;
+        await writeFile(path.join(outDir, `${name}.json`), json);
+        names.push(name);
+    }
+    await writeIndex(outDir, names);
+    console.log(`[i18n] compiled ${locale} (${names.length} namespace${names.length === 1 ? '' : 's'})`);
 };
 
 const compileAll = async () => {
-    const entries = await readdir(ROOT, { recursive: true, withFileTypes: true });
-    const tasks = entries
-        .filter(e => e.isFile() && e.name.endsWith('.yaml'))
-        .map(e => compile(path.join(e.parentPath, e.name)));
-    await Promise.all(tasks);
+    await mkdir(OUT, { recursive: true });
+    const locales = await localeDirs();
+    await Promise.all(locales.map(compileLocale));
+};
+
+const localeFromPath = (p: string) => path.relative(SRC, p).split(path.sep)[0];
+
+const handleChange = async (p: string) => {
+    const locale = localeFromPath(p);
+    if (!locale) return;
+    await compileLocale(locale);
+};
+
+const handleRemove = async (p: string) => {
+    const locale = localeFromPath(p);
+    if (!locale) return;
+    const name = path.basename(p, '.yaml');
+    await rm(path.join(OUT, locale, `${name}.json`), { force: true });
+    await compileLocale(locale);
 };
 
 const main = async () => {
     await compileAll();
     if (!process.argv.includes('--watch')) return;
 
-    const watcher = watch(`${ROOT}/**/*.yaml`, { ignoreInitial: true });
-    watcher.on('add', compile);
-    watcher.on('change', compile);
-    watcher.on('unlink', removeJson);
-    console.log(`[i18n] watching ${ROOT}`);
+    const watcher = watch(`${SRC}/**/*.yaml`, { ignoreInitial: true });
+    watcher.on('add', handleChange);
+    watcher.on('change', handleChange);
+    watcher.on('unlink', handleRemove);
+    console.log(`[i18n] watching ${SRC}`);
 };
 
 main().catch(err => {

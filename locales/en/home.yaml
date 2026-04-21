@@ -1,0 +1,15 @@
+title: Welcome to the Next.js Starter
+lead: This template ships with full i18n via next-intl — YAML source, JSON at runtime, type-safe keys across every locale.
+currentLocale: You are viewing
+configHeading: i18n configuration
+configItems:
+    translations: Edit translations under locales/[locale]/*.yaml
+    routing: Routing + default locale — src/i18n/routing.ts
+    bases: Base/overlay map — src/i18n/bases.ts
+    switcher: Locale switcher — src/components/organisms/layout/header/locale-switcher.tsx
+removalHeading: Don't need i18n?
+removalAi: With Claude — say "remove i18n" to invoke the remove-i18n skill.
+removalManual: Without Claude — follow the checklist in .claude/skills/remove-i18n/SKILL.md.
+docsHeading: Read more
+docsReadme: README — project overview
+docsStandards: STANDARDS — full i18n pattern and locale-addition recipe
