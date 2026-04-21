@@ -95,6 +95,117 @@ When a section is simple (no interactive sub-parts), keep it as a **flat file** 
 - For global or shared client-side state, use **Zustand**
 - Lift data fetching to the highest server boundary possible
 
+## Internationalization (i18n)
+
+Built on **next-intl** with a **base + overlay** model. Authoring is **YAML**, runtime is **JSON** (generated, gitignored).
+
+### Locale model
+
+- **URL locales** = regional variants only (e.g. `en-US`, `en-GB`, `es-ES`, `es-MX`, `hi-IN`). Listed in `src/i18n/routing.ts`
+- **Base locales** = per-language full dictionaries (e.g. `en`, `es`, `hi`). Live in `messages/` but **never** appear in a URL
+- Each URL locale maps to exactly one base locale via `baseOf` in `src/i18n/bases.ts`
+- Default locale = `en-US`. Proxy auto-redirects `/` → default and negotiates via `Accept-Language`
+- **Always create a base even when only one region uses it today** — future regions drop in as overlays without refactor
+
+### File structure
+
+```
+messages/
+  en/                  ← base (full dict)
+    index.ts           ← `satisfies MessageShape`
+    home.yaml
+    loading.yaml
+    not-found.yaml
+  en-GB/               ← overlay (partial deltas only)
+    index.ts           ← `satisfies MessageOverride`
+    home.yaml          ← only keys that differ from base
+  en-US/               ← overlay (may be empty)
+    index.ts           ← `export default {} satisfies MessageOverride`
+  es/ es-ES/ es-MX/
+  hi/ hi-IN/
+src/i18n/
+  routing.ts           ← `locales` (regional) + `defaultLocale`
+  bases.ts             ← `baseOf`, `loadBase`, `loadOverlay` (explicit static imports)
+  request.ts           ← loads base + overlay, deep-merges per request
+  navigation.ts        ← locale-aware `Link`, `redirect`, `usePathname`, `useRouter`
+src/global.d.ts        ← `MessageShape`, `MessageOverride`, `AppConfig.Messages`/`Locale` augment
+src/proxy.ts           ← `createMiddleware(routing)` (Next 16 renamed from `middleware.ts`)
+messages.json          ← generated from YAML by `scripts/gen-messages.ts` (gitignored)
+```
+
+### Authoring rules
+
+- **Edit YAML only.** Never hand-edit generated `.json` — changes will be overwritten
+- One YAML file per namespace. Kebab-case filename → camelCase namespace key in `index.ts`
+- Nest freely inside a file (e.g. `home.dashboard.widgets.title`) — next-intl resolves dotted paths
+- Base dicts MUST cover every key → `satisfies MessageShape` catches drift at build
+- Overlay dicts MUST be subsets → `satisfies MessageOverride` (deep partial) allows any subset
+
+### Typesafety contract
+
+- `Messages` type in `src/global.d.ts` is `typeof en` — the `en` base is the canonical shape source
+- `useTranslations('ns')` and `t('key')` autocomplete + compile-error on typos
+- Non-`en` bases conform to the shape via `satisfies MessageShape`; missing keys fail tsc
+- Overlays conform via `satisfies MessageOverride`; arbitrary deep-partial subsets allowed
+- Never pass dynamic strings to `useTranslations` / `t` — always string literals so TS can gate them
+
+### Using translations
+
+```tsx
+// Server component
+import { getTranslations } from 'next-intl/server';
+const t = await getTranslations('home');
+<h1>{t('title')}</h1>;
+
+// Client component
+('use client');
+import { useTranslations } from 'next-intl';
+const t = useTranslations('home');
+```
+
+For locale-aware navigation always import from `~/i18n/navigation` (auto-prepends locale):
+
+```tsx
+import { Link } from '~/i18n/navigation';
+<Link href="/users">...</Link>;
+```
+
+### Adding a new locale
+
+**New region on an existing base** (e.g. `en-AU`):
+
+1. `mkdir messages/en-AU`
+2. `messages/en-AU/index.ts` → `export default {} satisfies MessageOverride` (or import overlay YAMLs)
+3. Add any delta YAMLs (e.g. `en-AU/home.yaml`)
+4. `routing.ts` → push `'en-AU'` to `locales`
+5. `bases.ts` → add `'en-AU': 'en'` to `baseOf` and a `loadOverlay['en-AU']` entry
+
+**New language** (e.g. `fr`):
+
+1. `mkdir messages/fr` → author full YAML dict + `index.ts satisfies MessageShape`
+2. `mkdir messages/fr-FR` (and any other regions) → overlay `index.ts`
+3. `routing.ts` → add regional variants to `locales`
+4. `bases.ts` → extend `BaseLocale` union, add `baseOf` rows, `loadBase['fr']`, `loadOverlay` rows
+
+Never add a base locale to `routing.locales` — bases are not URL-addressable.
+
+### Pipeline
+
+- `bun run gen:i18n` — compile all `messages/**/*.yaml` → sibling `.json`
+- `bun run gen:i18n:watch` — chokidar watcher, regenerates on change
+- `bun run dev` — runs `gen:i18n` once, then `gen:i18n:watch` + `next dev` in parallel
+- `bun run build` / `bun run check-types` — both prefix with `gen:i18n` so JSON exists before Next/tsc reads it
+- `messages/**/*.json` is gitignored; YAML is the source of truth
+
+### Don't need i18n? Remove it cleanly
+
+This template ships i18n wired up. If your app is single-language, strip it instead of leaving it dormant.
+
+- **AI-assisted (recommended):** invoke the `remove-i18n` skill at `.claude/skills/remove-i18n/SKILL.md`. Ask Claude something like _"remove i18n"_ or _"drop localization"_ — the skill handles file deletes, import reverts, `package.json`/`.gitignore`/`next.config.ts` cleanup, dep removal via `bun remove`, and a build verification.
+- **Manual:** follow the numbered steps in that same `SKILL.md` file — it doubles as the human checklist. High-level: move `src/app/[locale]/(pages)` back to `src/app/(pages)`, revert `LayoutProps` path params, drop `useTranslations` calls, delete `messages/`, `src/i18n/`, `src/proxy.ts`, `src/global.d.ts`, `scripts/gen-messages.ts`, revert `next.config.ts` and the `dev`/`build`/`check-types` scripts, `bun remove next-intl yaml chokidar concurrently`, strip the i18n `.gitignore` block, delete this section.
+
+After removal, `/` should serve your app directly (no 307 to `/en-US`).
+
 ## Error Handling
 
 - **Layout-level boundaries by default**: Place `error.tsx`, `loading.tsx`, and `not-found.tsx` at layout boundaries
