@@ -13,7 +13,10 @@ const Logo = ({ hidden = false }: { hidden?: boolean }) => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
+                role="img"
+                aria-labelledby="logo-title"
             >
+                <title id="logo-title">MKSingh logo</title>
                 <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

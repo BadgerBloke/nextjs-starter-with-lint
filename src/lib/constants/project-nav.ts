@@ -1,5 +1,3 @@
-import type { Route } from 'next';
-
 import {
     CheckListIcon,
     CreditCardIcon,
@@ -8,6 +6,7 @@ import {
     Settings01Icon,
     UserMultiple02Icon,
 } from '@hugeicons/core-free-icons';
+import type { Route } from 'next';
 
 import type { NavItem } from '~/lib/interfaces/nav';
 

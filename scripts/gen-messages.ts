@@ -1,6 +1,6 @@
-import { watch } from 'chokidar';
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { watch } from 'chokidar';
 import { parse } from 'yaml';
 
 const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
@@ -48,7 +48,6 @@ const compileLocale = async (locale: string) => {
         names.push(name);
     }
     await writeIndex(outDir, names);
-    console.log(`[i18n] compiled ${locale} (${names.length} namespace${names.length === 1 ? '' : 's'})`);
 };
 
 const compileAll = async () => {
@@ -81,10 +80,8 @@ const main = async () => {
     watcher.on('add', handleChange);
     watcher.on('change', handleChange);
     watcher.on('unlink', handleRemove);
-    console.log(`[i18n] watching ${SRC}`);
 };
 
-main().catch(err => {
-    console.error('[i18n] failed', err);
+main().catch(_err => {
     process.exit(1);
 });

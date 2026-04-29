@@ -1,9 +1,8 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-
 import { ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useTranslations } from 'next-intl';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
 import {
@@ -14,7 +13,7 @@ import {
     SidebarMenuSubItem,
 } from '~/components/ui/sidebar';
 import { Link, usePathname } from '~/i18n/navigation';
-import { NavBranch } from '~/lib/interfaces/nav';
+import type { NavBranch } from '~/lib/interfaces/nav';
 
 const SidenavMenu = ({ item }: { item: NavBranch }) => {
     const pathname = usePathname();

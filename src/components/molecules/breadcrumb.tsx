@@ -1,7 +1,6 @@
-import { useTranslations } from 'next-intl';
-
 import { ArrowRight01Icon, DashboardSquare02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useTranslations } from 'next-intl';
 
 import { Link } from '~/i18n/navigation';
 import { projectNav } from '~/lib/constants/project-nav';
@@ -35,7 +34,7 @@ const Breadcrumb = ({ pathname, projectId }: BreadcrumbProps) => {
 
                 if (isLast || !crumb.href) {
                     return (
-                        <Typography variant={isLast ? 'muted' : 'small'} key={`${crumb.labelKey}-${index}`}>
+                        <Typography variant={isLast ? 'muted' : 'small'} key={`${crumb.labelKey}-${crumb.href ?? 'leaf'}`}>
                             <span className="flex cursor-not-allowed items-center gap-1">
                                 {leadIcon} {label} {trailIcon}
                             </span>
@@ -46,7 +45,7 @@ const Breadcrumb = ({ pathname, projectId }: BreadcrumbProps) => {
                 return (
                     <Link
                         href={crumb.href}
-                        key={`${crumb.labelKey}-${index}`}
+                        key={`${crumb.labelKey}-${crumb.href}`}
                         className={cn(buttonVariants({ variant: 'link' }), 'h-fit p-0')}
                     >
                         <Typography variant="small">

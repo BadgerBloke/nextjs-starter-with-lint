@@ -1,12 +1,11 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useTranslations } from 'next-intl';
 
 import { SidebarMenuButton, SidebarMenuItem } from '~/components/ui/sidebar';
 import { Link, usePathname } from '~/i18n/navigation';
-import { NavLeaf } from '~/lib/interfaces/nav';
+import type { NavLeaf } from '~/lib/interfaces/nav';
 
 const SidebarLink = ({ href, labelKey, icon }: NavLeaf) => {
     const pathname = usePathname();

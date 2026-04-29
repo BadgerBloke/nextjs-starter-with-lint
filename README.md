@@ -9,7 +9,7 @@ A modern Next.js starter template with App Router, TypeScript, Tailwind CSS v4, 
 - **Tailwind CSS v4** with shadcn/ui components
 - **Atomic Design** component architecture (atoms, molecules, organisms)
 - **next-intl** i18n with base+overlay locale model and YAML-authored dictionaries
-- **ESLint & Prettier** with plugins for React, TypeScript, accessibility, and import sorting
+- **Biome** for linting, formatting, and import sorting (one tool, fast)
 - **Husky & lint-staged** for pre-commit code quality checks
 - **Commitlint** for conventional commit messages
 - **Bun** as the package manager
@@ -46,11 +46,12 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `start`          | Start the production server                                      |
 | `gen:i18n`       | Compile `messages/**/*.yaml` → sibling `.json` (source of truth) |
 | `gen:i18n:watch` | Same as `gen:i18n` plus chokidar watcher for live regen          |
-| `lint`           | Run ESLint                                                       |
-| `lint:fix`       | Run ESLint with auto-fix                                         |
-| `format`         | Format code with Prettier                                        |
+| `lint`           | Lint with Biome                                                  |
+| `lint:fix`       | Lint and auto-fix with Biome                                     |
+| `format`         | Format code with Biome                                           |
 | `check-types`    | Compile i18n YAML, then type-check with TypeScript               |
 | `check-format`   | Check formatting without writing                                 |
+| `check-lint`     | Lint without writing                                             |
 | `test-all`       | Run format, lint, type-check, and build                          |
 
 ## Project Structure
@@ -85,7 +86,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ├── AGENTS.md                   # Next.js agent rules
 ├── STANDARDS.md                # Project coding standards
 ├── SKILLS.md                   # Recommended Claude Code skills
-├── eslint.config.mjs           # ESLint configuration
+├── biome.json                  # Biome lint + format configuration
 ├── next.config.ts              # Next.js configuration (wrapped with next-intl plugin)
 └── tsconfig.json               # TypeScript configuration
 ```

@@ -1,6 +1,5 @@
-import clsx from 'clsx';
-
 import { HugeiconsIcon } from '@hugeicons/react';
+import clsx from 'clsx';
 
 import LocaleSwitcher from '~/components/molecules/locale-switcher';
 import Logo from '~/components/molecules/logo';
@@ -16,7 +15,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { cn } from '~/lib/utils';
 
-import { NavItem } from './interfaces';
+import type { NavItem } from './interfaces';
 
 const navigationLinks: NavItem[] = [];
 
@@ -26,7 +25,16 @@ const Header = () => (
         <div className="flex items-center gap-2 flex-1">
             {/* Mobile menu trigger */}
             <Popover>
-                <PopoverTrigger render={<Button className="group size-8 md:hidden" variant="ghost" size="icon" />}>
+                <PopoverTrigger
+                    render={
+                        <Button
+                            className="group size-8 md:hidden"
+                            variant="ghost"
+                            size="icon"
+                            aria-label="Toggle navigation menu"
+                        />
+                    }
+                >
                     <svg
                         className="pointer-events-none"
                         width={16}
@@ -38,7 +46,10 @@ const Header = () => (
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                        focusable="false"
                     >
+                        <title>Menu icon</title>
                         <path
                             d="M4 12L20 12"
                             className="origin-center -translate-y-1.75 transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-x-0 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-315"
@@ -57,15 +68,15 @@ const Header = () => (
                     <NavigationMenu className="max-w-none *:w-full">
                         <NavigationMenuList className="flex-col items-start gap-2">
                             {navigationLinks.map((link, index) => (
-                                <NavigationMenuItem key={index} className="w-full">
+                                <NavigationMenuItem key={link.label} className="w-full">
                                     {link.submenu ? (
                                         <>
                                             <div className="text-muted-foreground px-2 py-1.5 text-xs font-medium">
                                                 {link.label}
                                             </div>
                                             <ul>
-                                                {link.items.map((item, itemIndex) => (
-                                                    <li key={itemIndex}>
+                                                {link.items.map(item => (
+                                                    <li key={item.href}>
                                                         <NavigationMenuLink href={item.href} className="py-1.5">
                                                             {item.label}
                                                         </NavigationMenuLink>
@@ -88,11 +99,7 @@ const Header = () => (
                                             (link.submenu &&
                                                 navigationLinks[index + 1].submenu &&
                                                 link.type !== navigationLinks[index + 1].type)) && (
-                                            <div
-                                                role="separator"
-                                                aria-orientation="horizontal"
-                                                className="bg-border -mx-1 my-1 h-px w-full"
-                                            />
+                                            <hr className="bg-border -mx-1 my-1 h-px w-full border-0" />
                                         )}
                                 </NavigationMenuItem>
                             ))}
@@ -101,11 +108,7 @@ const Header = () => (
                                 role="presentation"
                                 aria-hidden="true"
                             >
-                                <div
-                                    role="separator"
-                                    aria-orientation="horizontal"
-                                    className="bg-border -mx-1 my-1 h-px"
-                                ></div>
+                                <hr className="bg-border -mx-1 my-1 h-px border-0" />
                             </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>
@@ -117,8 +120,8 @@ const Header = () => (
                 {/* Navigation menu */}
                 <NavigationMenu className="max-md:hidden">
                     <NavigationMenuList className="gap-2">
-                        {navigationLinks.map((link, index) => (
-                            <NavigationMenuItem key={index}>
+                        {navigationLinks.map(link => (
+                            <NavigationMenuItem key={link.label}>
                                 {link.submenu ? (
                                     <>
                                         <NavigationMenuTrigger className="text-muted-foreground hover:text-primary bg-transparent px-2 py-1.5 font-medium *:[svg]:-me-0.5 *:[svg]:size-3.5">
@@ -126,8 +129,8 @@ const Header = () => (
                                         </NavigationMenuTrigger>
                                         <NavigationMenuContent className="data-[motion=from-end]:slide-in-from-right-16! data-[motion=from-start]:slide-in-from-left-16! data-[motion=to-end]:slide-out-to-right-16! data-[motion=to-start]:slide-out-to-left-16! z-50 p-1">
                                             <ul className={cn(link.type === 'description' ? 'min-w-64' : 'min-w-48')}>
-                                                {link.items.map((item, itemIndex) => (
-                                                    <li key={itemIndex}>
+                                                {link.items.map(item => (
+                                                    <li key={item.href}>
                                                         <NavigationMenuLink href={item.href} className="py-1.5">
                                                             {/* Display icon if present */}
                                                             {link.type === 'icon' && 'icon' in item && (

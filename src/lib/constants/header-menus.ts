@@ -1,8 +1,7 @@
-import { Route } from 'next';
-import { v7 as uuid } from 'uuid';
-
 import { Home01Icon, News01Icon } from '@hugeicons/core-free-icons';
 import type { IconSvgElement } from '@hugeicons/react';
+import type { Route } from 'next';
+import { v7 as uuid } from 'uuid';
 
 type MenuType = {
     id: string;

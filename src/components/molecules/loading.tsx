@@ -1,7 +1,7 @@
 import { Loading01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 
-import Typography, { TypographyVariant } from '../atoms/typography';
+import Typography, { type TypographyVariant } from '../atoms/typography';
 
 interface LoaderProps {
     message?: string;

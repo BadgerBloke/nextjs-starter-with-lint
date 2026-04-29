@@ -1,14 +1,12 @@
 #!/bin/sh
 
-echo '🏗️👷 Styling, testing and building your project before committing'
+echo '🏗️👷 Running Biome on staged files before commit'
 
-# Check ESLint Standards
 bun lint-staged ||
   (
-    echo '🔨❌ Yoo, you have a problem in your code. Check linter 🔨❌
-     Run bun lint, add changes and try commit again.
+    echo '🔨❌ Lint/format errors. Run `bun lint:fix` then re-stage. 🔨❌
      '
     false
   )
 
-echo '⌛️⌛️⌛️ You win this time... I am committing this now. ⌛️⌛️⌛️'
+echo '✅ Staged files clean. Committing.'

@@ -1,6 +1,5 @@
-import type { Route } from 'next';
-
 import type { IconSvgElement } from '@hugeicons/react';
+import type { Route } from 'next';
 
 import type { MessageShape } from '~/global';
 
