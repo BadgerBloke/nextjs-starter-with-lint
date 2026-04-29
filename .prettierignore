@@ -1,0 +1,14 @@
+# Prettier handles YAML only — Biome owns everything else.
+*
+!*.yaml
+!*.yml
+!locales/
+!locales/**
+
+node_modules
+.next
+dist
+build
+messages
+public
+*.tsbuildinfo
