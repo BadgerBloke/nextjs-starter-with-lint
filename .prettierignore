@@ -1,14 +1,15 @@
-# Prettier handles YAML only — Biome owns everything else.
+# Prettier formats YAML only — Biome owns everything else.
+# Ignore-all, then allowlist *.yaml / *.yml at any depth.
 *
+!**/
 !*.yaml
 !*.yml
-!locales/
-!locales/**
+!**/*.yaml
+!**/*.yml
 
-node_modules
-.next
-dist
-build
-messages
-public
-*.tsbuildinfo
+# Hard-ignore vendor and build outputs.
+node_modules/
+.next/
+dist/
+build/
+messages/

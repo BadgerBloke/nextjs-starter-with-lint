@@ -82,6 +82,17 @@ When a section is simple (no interactive sub-parts), keep it as a **flat file** 
 - **Tailwind-first even in custom CSS files** — use `@apply` to compose Tailwind utilities into custom classes, and CSS variables for theming
 - Raw/custom CSS is acceptable as a last resort when Tailwind genuinely can't express the styling, but always attempt a Tailwind-based solution first
 
+## Lint & Format Tooling
+
+- **Biome** is the source of truth for JS, TS, JSX, TSX, JSON, JSONC, and CSS — linting, formatting, and import organization. Configured in `biome.json`
+- **Prettier** is scoped to **YAML only** (`*.yaml` / `*.yml` at any depth). It exists because Biome 2.4 doesn't format YAML yet
+- **Don't widen Prettier's scope.** Three layers keep it YAML-only:
+    1. `.prettierignore` ignore-all + YAML allowlist
+    2. Script globs always pass `**/*.{yaml,yml}` — never `prettier --write .`
+    3. lint-staged matches only `*.{yaml,yml}` for Prettier
+- If a tool overlap appears (both touching the same file), resolve in favor of Biome and remove from Prettier scope
+- When Biome ships YAML support, drop Prettier entirely
+
 ## TypeScript
 
 - **Strict mode** enabled
