@@ -5,7 +5,8 @@ rules:
     type-enum:
         - 2
         - always
-        - - core
+        - - ai
+          - core
           - chore
           - ci
           - feat
@@ -18,6 +19,7 @@ rules:
           - revert
 help: |
     **Possible types**:
+    `ai`:               Changes to the AI agents.
     `core`:             Change build process, tooling or dependencies.
     `chore`:            Changes to the build process or tooling or dependencies.
     `ci`:               Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
