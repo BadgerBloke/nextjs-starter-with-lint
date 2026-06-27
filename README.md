@@ -52,7 +52,12 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `check-types`    | Compile i18n YAML, then type-check with TypeScript               |
 | `check-format`   | Check formatting without writing                                 |
 | `check-lint`     | Lint without writing                                             |
-| `test-all`       | Run format, lint, type-check, and build                          |
+| `test`           | Run unit/component tests (Vitest) in watch mode                  |
+| `test:run`       | Run unit/component tests once                                    |
+| `test:coverage`  | Run unit/component tests with coverage thresholds                |
+| `test:governance`| Assert every authored component has a mirror test in `tests/`    |
+| `test:e2e`       | Run Playwright end-to-end tests                                  |
+| `test-all`       | Run format, lint, type-check, governance, coverage, and build    |
 
 ## Project Structure
 
@@ -65,7 +70,11 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 │   └── hi/ hi-IN/
 ├── messages/                   # i18n generated output (JSON + index.ts, GITIGNORED)
 ├── scripts/
-│   └── gen-messages.ts         # locales/ → messages/ compiler (one-shot + watch)
+│   ├── gen-messages.ts         # locales/ → messages/ compiler (one-shot + watch)
+│   └── test-governance.ts      # asserts every component has a mirror test
+├── tests/                      # unit/component tests (Vitest), mirrors src/ tree
+│   └── support/                # shared test helpers (renderWithIntl)
+├── e2e/                        # end-to-end tests (Playwright)
 ├── src/
 │   ├── app/                    # Next.js App Router
 │   │   ├── [locale]/           # all routes nested under locale segment
@@ -85,6 +94,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ├── CLAUDE.md                   # AI agent instructions (imports the files below)
 ├── AGENTS.md                   # Next.js agent rules
 ├── STANDARDS.md                # Project coding standards
+├── TESTING.md                  # Testing standards (unit/component + E2E)
 ├── SKILLS.md                   # Recommended Claude Code skills
 ├── biome.json                  # Biome lint + format configuration
 ├── next.config.ts              # Next.js configuration (wrapped with next-intl plugin)
@@ -105,7 +115,7 @@ Adding or editing translations, and the full locale-addition recipe, lives in [S
 
 ## Standards
 
-See [STANDARDS.md](./STANDARDS.md) for the full coding standards covering naming conventions, component architecture, styling, testing, and more.
+See [STANDARDS.md](./STANDARDS.md) for the full coding standards covering naming conventions, component architecture, styling, and more, and [TESTING.md](./TESTING.md) for the testing standards (unit/component + E2E).
 
 ## Claude Code Skills
 

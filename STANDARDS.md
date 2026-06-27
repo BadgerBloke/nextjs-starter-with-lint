@@ -229,10 +229,11 @@ After removal, `/` should serve your app directly (no 307 to `/en-US`).
 
 ## Testing
 
-- **Vitest + React Testing Library** for unit and component tests
-- **Playwright** for end-to-end tests
-- Unit/component test files co-located next to source
-- E2E tests in a separate top-level test directory
+- **Vitest + React Testing Library** for unit/component tests; **Playwright** for E2E.
+- Unit/component tests are **not co-located** — they live in a top-level **`tests/`** folder that mirrors `src/` (`src/components/atoms/foo.tsx` → `tests/components/atoms/foo.test.tsx`). E2E lives in **`e2e/`**.
+- Every authored component must have a mirror test, **enforced** by `scripts/test-governance.ts` (pre-commit, pre-push, CI).
+
+> **Full rules — read before writing any test:** see [TESTING.md](./TESTING.md). It covers the layout/naming contract, governance scope and the `@no-unit-test` opt-out, coverage thresholds, the global/per-file mock setup, base-ui testing gotchas, E2E conventions, commands, and copy-paste templates.
 
 ## Accessibility
 

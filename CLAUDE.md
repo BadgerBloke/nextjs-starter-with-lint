@@ -1,3 +1,4 @@
 @AGENTS.md
 @STANDARDS.md
+@TESTING.md
 @SKILLS.md
