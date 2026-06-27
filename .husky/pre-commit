@@ -9,4 +9,13 @@ bun lint-staged ||
     false
   )
 
+echo '🧪👷 Checking every component is paired with a test'
+
+bun run scripts/test-governance.ts --staged ||
+  (
+    echo '🧪❌ Missing or orphaned tests. Add/remove the mirror test in tests/ then re-stage. 🧪❌
+     '
+    false
+  )
+
 echo '✅ Staged files clean. Committing.'

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+echo '🧪👷 Running unit/component coverage before push'
+
+bun run test:coverage ||
+  (
+    echo '🧪❌ Coverage below threshold (or tests failing). Fix before pushing. 🧪❌
+     '
+    false
+  )
+
+echo '✅ Coverage OK. Pushing.'
