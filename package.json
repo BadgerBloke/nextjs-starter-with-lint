@@ -18,7 +18,7 @@
         "format:yaml": "prettier --write \"locales/**/*.{yaml,yml}\"",
         "check-format": "biome format && prettier --check \"locales/**/*.{yaml,yml}\"",
         "check-lint": "biome lint",
-        "check-types": "bun run gen:i18n && tsc --pretty --noEmit",
+        "check-types": "bun run gen:i18n && next typegen && tsc --pretty --noEmit",
         "test": "vitest",
         "test:run": "vitest run",
         "test:coverage": "vitest run --coverage",
