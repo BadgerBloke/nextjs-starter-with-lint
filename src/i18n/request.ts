@@ -1,3 +1,4 @@
+import { locale as localeParam } from 'next/root-params';
 import { hasLocale } from 'next-intl';
 import { getRequestConfig } from 'next-intl/server';
 
@@ -15,8 +16,8 @@ const deepMerge = <T extends Record<string, unknown>>(base: T, over: Record<stri
     return out as T;
 };
 
-export default getRequestConfig(async ({ requestLocale }) => {
-    const requested = await requestLocale;
+export default getRequestConfig(async () => {
+    const requested = await localeParam();
     const locale = hasLocale(routing.locales, requested) ? requested : routing.defaultLocale;
 
     const [{ default: baseMsgs }, { default: overlay }] = await Promise.all([

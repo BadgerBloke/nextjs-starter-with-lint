@@ -117,6 +117,7 @@ Built on **next-intl** with a **base + overlay** model. Source lives in `locales
 - Each URL locale maps to exactly one base locale via `baseOf` in `src/i18n/bases.ts`
 - Default locale = `en-US`. `localePrefix: 'as-needed'` — default locale serves on clean paths (`/`, `/users`); non-default keeps the prefix (`/es-MX`, `/es-MX/users`). `/en-US/...` 307s back to `/...` to canonicalize. `hreflang` alt-links are auto-emitted for SEO
 - Switch to `localePrefix: 'always'` for hard-split URLs per locale, or `'never'` to drop the `[locale]` segment entirely and detect from cookie/header only (see next-intl docs — trades SEO for clean URLs)
+- **`[locale]` sits above the root layout on purpose.** That makes `locale` a **root param**, so `next/root-params` resolves it during prerendering and the routes keep a real static shell under Cache Components. Do not move the root layout back to `src/app/layout.tsx`, and do not reintroduce `setRequestLocale` — it is deprecated in next-intl and forces every route to render per-request
 - **Always create a base even when only one region uses it today** — future regions drop in as overlays without refactor
 
 ### File structure
@@ -135,10 +136,13 @@ locales/                 ← COMMITTED source (YAML)
   hi/ hi-IN/
 messages/                ← GENERATED + GITIGNORED (JSON + index.ts per locale)
   en/ en-GB/ en-US/ es/ es-ES/ es-MX/ hi/ hi-IN/
+src/app/
+  [locale]/layout.tsx    ← ROOT layout (`<html>`/`<body>`); `locale` is a root param, read via `next/root-params`
+  global-not-found.tsx   ← full-document 404 for unmatched URLs (required because the root layout is under a dynamic segment)
 src/i18n/
   routing.ts             ← `locales` (regional) + `defaultLocale`
   bases.ts               ← `baseOf`, `loadBase`, `loadOverlay` (explicit static imports + type annotations that gate drift)
-  request.ts             ← loads base + overlay, deep-merges per request
+  request.ts             ← reads `locale()` from `next/root-params`, loads base + overlay, deep-merges per request
   navigation.ts          ← locale-aware `Link`, `redirect`, `usePathname`, `useRouter`
 src/global.d.ts          ← `MessageShape`, `MessageOverride`, `AppConfig.Messages`/`Locale` augment
 src/proxy.ts             ← `createMiddleware(routing)` (Next 16 renamed from `middleware.ts`)

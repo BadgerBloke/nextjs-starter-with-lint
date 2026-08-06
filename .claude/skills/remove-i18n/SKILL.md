@@ -31,22 +31,28 @@ If the user's intent is ambiguous, ask via `AskUserQuestion` before destroying f
     ```
     Grep pattern="next-intl|~/i18n/|useTranslations|getTranslations" glob="src/**/*.{ts,tsx}"
     ```
-    If hits exist outside `src/i18n/`, `src/proxy.ts`, `src/global.d.ts`, `src/app/[locale]/**`, `src/app/layout.tsx`, report the paths to the user and ask whether to (a) delete those lines or (b) abort. Do not silently strip user code.
+    If hits exist outside `src/i18n/`, `src/proxy.ts`, `src/global.d.ts`, `src/app/[locale]/**`, report the paths to the user and ask whether to (a) delete those lines or (b) abort. Do not silently strip user code.
 
 ## Removal steps — execute in this order
 
-### 1. Move pages out of `[locale]`
+### 1. Move pages and the root layout out of `[locale]`
 
-The current tree is `src/app/[locale]/(pages)/...`. Move contents back up so routes are served directly from `src/app/(pages)/...`.
+`src/app/[locale]/layout.tsx` is the **root layout** — it renders `<html>`/`<body>` and reads the locale from `next/root-params`. Move the whole segment back up so routes are served directly from `src/app/(pages)/...`:
 
 ```
 git mv src/app/[locale]/(pages) src/app/(pages)
-```
-
-Then delete the now-empty `[locale]` directory and its layout:
-
-```
+git mv src/app/[locale]/layout.tsx src/app/layout.tsx
+git mv src/app/[locale]/loading.tsx src/app/loading.tsx
+git mv src/app/[locale]/not-found.tsx src/app/not-found.tsx
 rm -rf src/app/[locale]
+```
+
+Then rewrite `src/app/layout.tsx`: drop the `next/root-params` import and the `await localeParam()` call, hardcode `<html lang="en">`, drop `generateStaticParams`, drop the `NextIntlClientProvider` wrapper, and change the stylesheet import from `'../globals.css'` to `'./globals.css'`. Keep `LayoutProps<'/'>`, the font, metadata, and the provider stack.
+
+`src/app/global-not-found.tsx` only exists because the root layout sits under a dynamic segment. With the layout back at `src/app/layout.tsx`, `src/app/not-found.tsx` covers unmatched URLs again:
+
+```
+rm -f src/app/global-not-found.tsx
 ```
 
 ### 2. Revert route type params
